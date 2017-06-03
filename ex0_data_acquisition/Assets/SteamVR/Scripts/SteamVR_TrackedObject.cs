@@ -59,12 +59,14 @@ public class SteamVR_TrackedObject : MonoBehaviour
 		{
 			transform.position = origin.transform.TransformPoint(pose.pos);
 			transform.rotation = origin.rotation * pose.rot;
+            Debug.Log("Print out position"+ transform.position.x);
 		}
 		else
 		{
 			transform.localPosition = pose.pos;
 			transform.localRotation = pose.rot;
-		}
+            Debug.Log("Print out position" + transform.position.x);
+        }
 	}
 
 	SteamVR_Events.Action newPosesAction;
