@@ -63,7 +63,7 @@ public class UDPSend : MonoBehaviour
 	// OnGUI
 	void OnGUI()
 	{
-		/*Rect rectObj=new Rect(40,380,200,400);
+		Rect rectObj=new Rect(40,380,200,400);
 		GUIStyle style = new GUIStyle();
 		style.alignment = TextAnchor.UpperLeft;
 		GUI.Box(rectObj,"# UDPSend-Data\n127.0.0.1 "+port+" #\n"
@@ -76,8 +76,8 @@ public class UDPSend : MonoBehaviour
 		strMessage=GUI.TextField(new Rect(40,420,140,20),strMessage);
 		if (GUI.Button(new Rect(190,420,40,20),"send"))
 		{
-		//	sendString(strMessage+"\n");
-		}      */
+			sendString(strMessage+"\n");
+		}      
 	}
 	
 	// init
@@ -88,17 +88,18 @@ public class UDPSend : MonoBehaviour
 		
 		// define
 		IP="127.0.0.1";
-		port=12341;
-		
-		// ----------------------------
-		// Senden
-		// ----------------------------
-		remoteEndPoint = new IPEndPoint(IPAddress.Parse(IP), port);
+        //port=12341;
+        port = 8050;
+
+        // ----------------------------
+        // Senden
+        // ----------------------------
+        remoteEndPoint = new IPEndPoint(IPAddress.Parse(IP), port);
 		client = new UdpClient();
 		
 		// status
-		//print("Sending to "+IP+" : "+port);
-		//print("Testing: nc -lu "+IP+" : "+port);
+		print("Sending to "+IP+" : "+port);
+		print("Testing: nc -lu "+IP+" : "+port);
 		
 	}
 	
@@ -171,7 +172,7 @@ public class UDPSend : MonoBehaviour
 	{
 		do
 		{
-			//sendString(testStr);
+			sendString(testStr);
 			
 			
 		}

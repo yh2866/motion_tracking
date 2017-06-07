@@ -32,13 +32,13 @@ public class UDPReceive : MonoBehaviour {
 	UdpClient client;
 	
 	// public
-	// public string IP = "127.0.0.1"; default local
+    public string IP = "127.0.0.1"; //default local
 	public int port; // define > init
 	
 	// infos
 	public string lastReceivedUDPPacket="";
 	public string allReceivedUDPPackets=""; // clean up this from time to time!
-	private InformationParser infoParser;
+	//private InformationParser infoParser;
 
 	private bool connectionStarted; 
 	private volatile bool keepReciving; 
@@ -101,11 +101,12 @@ public class UDPReceive : MonoBehaviour {
 	// init
 	private void init()
 	{
-		infoParser = gameObject.AddComponent<InformationParser> ();
-		//print("UDPSend.init()");
-		
-		// define port
-		port = 12345;
+        //infoParser = gameObject.AddComponent<InformationParser> ();
+        //print("UDPSend.init()");
+
+        // define port
+        //port = 12345;
+        port = 8050;
 		
 		// status
 		//print("Sending to 127.0.0.1 : "+port);
@@ -140,7 +141,7 @@ public class UDPReceive : MonoBehaviour {
 				
 				// latest UDPpacket
 				lastReceivedUDPPacket=text;
-				infoParser.parseStringFromTCP(lastReceivedUDPPacket);
+				//infoParser.parseStringFromTCP(lastReceivedUDPPacket);
 				
 				// ....
 				allReceivedUDPPackets=allReceivedUDPPackets+text;
