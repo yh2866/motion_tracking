@@ -135,12 +135,12 @@ public class UDPReceive : MonoBehaviour {
 				
 				// Bytes mit der UTF8-Kodierung in das Textformat kodieren.
 				string text = Encoding.UTF8.GetString(data);
-				
-				// Den abgerufenen Text anzeigen.
-				//print(">> " + text);
-				
-				// latest UDPpacket
-				lastReceivedUDPPacket=text;
+                
+                // Den abgerufenen Text anzeigen.
+                print(">> " + text);
+
+                // latest UDPpacket
+                lastReceivedUDPPacket =text;
 				//infoParser.parseStringFromTCP(lastReceivedUDPPacket);
 				
 				// ....

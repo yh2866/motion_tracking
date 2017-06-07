@@ -33,9 +33,12 @@ public class SteamVR_TrackedObject : MonoBehaviour
 	public EIndex index;
 	public Transform origin; // if not set, relative to parent
     public bool isValid = false;
-    
 
-	private void OnNewPoses(TrackedDevicePose_t[] poses)
+    UDPSend sendObj = new UDPSend();
+    UDPReceive receiveObj = new UDPReceive();
+
+
+    private void OnNewPoses(TrackedDevicePose_t[] poses)
 	{
 		if (index == EIndex.None)
 			return;
@@ -60,15 +63,15 @@ public class SteamVR_TrackedObject : MonoBehaviour
 		{
 			transform.position = origin.transform.TransformPoint(pose.pos);
 			transform.rotation = origin.rotation * pose.rot;
-            Debug.Log("Print out position"+ transform.position.x);
-            Debug.Log("Test TrackedObject for Update");
+            //Debug.Log("Print out position"+ transform.position.x);
+            sendObj.sendString(transform.position.x.ToString());
         }
 		else
 		{
 			transform.localPosition = pose.pos;
 			transform.localRotation = pose.rot;
-            Debug.Log("Print out position" + transform.position.x);
-            Debug.Log("Test TrackedObject for Update");
+            //Debug.Log("Print out position" + transform.position.x);
+            sendObj.sendString(transform.position.x.ToString());
         }
 	}
 
@@ -76,6 +79,8 @@ public class SteamVR_TrackedObject : MonoBehaviour
 
 	void Awake()
 	{
+        sendObj.Start();
+        receiveObj.Start();
         Debug.Log("Test TrackedObject for Initial");
         newPosesAction = SteamVR_Events.NewPosesAction(OnNewPoses);
 	}

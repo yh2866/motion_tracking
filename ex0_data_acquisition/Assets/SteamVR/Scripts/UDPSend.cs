@@ -157,9 +157,8 @@ public class UDPSend : MonoBehaviour
 			client.Send(sendBytes_z, sendBytes_z.Length, remoteEndPoint); */
 
 			client.Send(sendBytes_send, sendBytes_send.Length, remoteEndPoint);
-
-			//}
-		}
+            //}
+        }
 		catch (Exception err)
 		{
 			print(err.ToString());
