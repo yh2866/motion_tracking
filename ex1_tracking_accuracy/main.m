@@ -1,7 +1,7 @@
 clear all
 clc
-Vicon = importdata('Object04.txt','\t',5);
-Vive = importdata('dataSaved-2.csv');
+Vicon = importdata('Object04.txt','\t',5); %Vicon data
+Vive = importdata('dataSaved-2.csv');      %Vive data
 Vicon_data = Vicon.data;
 Vive_data = Vive.data;
 %%%%%%%%%%%%%    Scale      %%%%%%%%%%%%%
