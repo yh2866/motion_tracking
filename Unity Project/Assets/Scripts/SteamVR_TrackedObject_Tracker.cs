@@ -6,6 +6,7 @@
 
 using UnityEngine;
 using Valve.VR;
+using System;
 
 public class SteamVR_TrackedObject_Tracker : MonoBehaviour
 {
@@ -72,8 +73,36 @@ public class SteamVR_TrackedObject_Tracker : MonoBehaviour
 			transform.localRotation = pose.rot;
             //Debug.Log("Print out position" + transform.position.x);
             //if (index == EIndex.Device5)
-            sendObj.sendString("pos.x:"+ transform.localPosition.x.ToString()+ "  pos.y:"+ transform.localPosition.y.ToString()+ "  pos.z:"+ transform.localPosition.z.ToString()+
-            "  rot.x:" + transform.localRotation.x.ToString() + "  rot.y:" + transform.localRotation.y.ToString() + "  rot.z:" + transform.localRotation.z.ToString() + "  rot.w:" + transform.localRotation.w.ToString());
+            // string x = (string) transform.localPosition.x;
+            // string y = (string) transform.localPosition.y;
+            // string z = (string) transform.localPosition.z;
+            // string rot_x = (string) transform.localRotation.x;
+            // string rot_y = (string) transform.localRotation.y;
+            // string rot_z = (string) transform.localRotation.z;
+            // string rot_w = (string) transform.localRotation.w;
+            // string x = transform.localPosition.x.ToString();
+            // string y = transform.localPosition.y.ToString();
+            // string z = transform.localPosition.z.ToString();
+            // string rot_x = transform.localRotation.x.ToString();
+            // string rot_y = transform.localRotation.y.ToString();
+            // string rot_z = transform.localRotation.z.ToString();
+            // string rot_w = transform.localRotation.w.ToString();
+
+			float pos_x = transform.localPosition.x;
+			float pos_y = transform.localPosition.y;
+			float pos_z = transform.localPosition.z;
+			float rot_x = transform.localRotation.x;
+			float rot_y = transform.localRotation.y;
+			float rot_z = transform.localRotation.z;
+			float rot_w = transform.localRotation.w;
+            var floatArray = new float[] {pos_x, pos_y, pos_z, rot_x, rot_y, rot_z, rot_w};
+            var byteArray = new byte[floatArray.Length * 4];
+            Buffer.BlockCopy(floatArray, 0, byteArray, 0, byteArray.Length);
+            sendObj.sendByte(byteArray);
+
+            //sendObj.sendString(x + y + z + rot_x + rot_y + rot_z + rot_w);
+            //sendObj.sendString(transform.localPosition.x.ToString() + transform.localPosition.y.ToString() + transform.localPosition.z.ToString() +
+            //transform.localRotation.x.ToString() + "  rot.y:" + transform.localRotation.y.ToString() + "  rot.z:" + transform.localRotation.z.ToString() + "  rot.w:" + transform.localRotation.w.ToString());
          
         }
 	}

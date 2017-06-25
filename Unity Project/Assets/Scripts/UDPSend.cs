@@ -87,9 +87,11 @@ public class UDPSend : MonoBehaviour
 		//print("UDPSend.init()");
 		
 		// define
-		IP="127.0.0.1";
+		//IP="127.0.0.1";
+		IP="10.10.200.1";
         //port=12341;
-        port = 8050;
+        //port = 8050;
+        port = 50000;
 
         // ----------------------------
         // Senden
@@ -164,10 +166,41 @@ public class UDPSend : MonoBehaviour
 			print(err.ToString());
 		}
 	}
-	
-	
-	// endless test
-	private void sendEndless(string testStr)
+    // sendData
+    public void sendByte(Byte[] sendBytes_send)
+    {
+
+        try
+        {
+            //if (message != "")
+            //{
+
+            // Daten mit der UTF8-Kodierung in das Binärformat kodieren.
+            //byte[] data = Encoding.UTF8.GetBytes(message);
+
+            /*byte [] sendBytes_x = Encoding.UTF8.GetBytes (x);
+			byte [] sendBytes_y = Encoding.UTF8.GetBytes (y);
+			byte [] sendBytes_z = Encoding.UTF8.GetBytes (z); */
+
+
+            
+            // Den message zum Remote-Client senden.
+            //			client.Send(data, data.Length, remoteEndPoint);
+            /*client.Send(sendBytes_x, sendBytes_x.Length, remoteEndPoint);
+			client.Send(sendBytes_y, sendBytes_y.Length, remoteEndPoint);
+			client.Send(sendBytes_z, sendBytes_z.Length, remoteEndPoint); */
+
+            client.Send(sendBytes_send, sendBytes_send.Length, remoteEndPoint);
+            //}
+        }
+        catch (Exception err)
+        {
+            print(err.ToString());
+        }
+    }
+
+    // endless test
+    private void sendEndless(string testStr)
 	{
 		do
 		{
