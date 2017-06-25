@@ -35,7 +35,7 @@ public class SteamVR_TrackedObject_Tracker : MonoBehaviour
     public bool isValid = false;
 
     UDPSend sendObj = new UDPSend();
-    UDPReceive receiveObj = new UDPReceive();
+    //UDPReceive receiveObj = new UDPReceive();
 
 
     private void OnNewPoses(TrackedDevicePose_t[] poses)
@@ -72,8 +72,8 @@ public class SteamVR_TrackedObject_Tracker : MonoBehaviour
 			transform.localRotation = pose.rot;
             //Debug.Log("Print out position" + transform.position.x);
             //if (index == EIndex.Device5)
-                sendObj.sendString("pos.x:"+ transform.localPosition.x.ToString()+ "  pos.y:"+ transform.localPosition.y.ToString()+ "  pos.z:"+ transform.localPosition.z.ToString()+
-                    "  rot.x:" + transform.localRotation.x.ToString() + "  rot.y:" + transform.localRotation.y.ToString() + "  rot.z:" + transform.localRotation.z.ToString());
+            sendObj.sendString("pos.x:"+ transform.localPosition.x.ToString()+ "  pos.y:"+ transform.localPosition.y.ToString()+ "  pos.z:"+ transform.localPosition.z.ToString()+
+            "  rot.x:" + transform.localRotation.x.ToString() + "  rot.y:" + transform.localRotation.y.ToString() + "  rot.z:" + transform.localRotation.z.ToString() + "  rot.w:" + transform.localRotation.w.ToString());
          
         }
 	}
@@ -83,7 +83,7 @@ public class SteamVR_TrackedObject_Tracker : MonoBehaviour
 	void Awake()
 	{
         sendObj.Start();
-        receiveObj.Start();
+        //receiveObj.Start();
         Debug.Log("Test TrackedObject for Initial");
         newPosesAction = SteamVR_Events.NewPosesAction(OnNewPoses);
 	}
