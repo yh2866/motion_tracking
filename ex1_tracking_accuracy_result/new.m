@@ -1,6 +1,5 @@
-[wandO1,wandO2,wandO3,wandX1,wandX2,wandX3,wandX4,wandX5,wandX6,wandY11,wandY12,wandY13,wandY21,wandY22,wandY23,Tracker1,Tracker2,Tracker3,Tracker4,Tracker5,Tracker6,Tracker7] = importfile('test_rotation.txt', 3, inf);
+[wandO1,wandO2,wandO3,wandX1,wandX2,wandX3,wandX4,wandX5,wandX6,wandY11,wandY12,wandY13,wandY21,wandY22,wandY23,Tracker1,Tracker2,Tracker3,Tracker4,Tracker5,Tracker6,Tracker7] = importfile('test_circle.txt', 3, inf);
 %Preprocessing: get rid of missing points
-
 
 % for i = 1:length(wandO1)
 %     if (wandO1(i) == 0 || wandO2(i) == 0 || wandO3(i) == 0) ...
@@ -19,24 +18,22 @@
 %     end
 % end
 
-% %%%%Extract only i 2505~2532)
-% end_point = 2500;
-% wandO1 = wandO1([1:end_point]);
-% wandO2 = wandO2([1:end_point]);
-% wandO3 = wandO3([1:end_point]);
-% wandX1 = wandX1([1:end_point]);
-% wandX2 = wandX2([1:end_point]);
-% wandX3 = wandX3([1:end_point]);
-% wandY11 = wandY11([1:end_point]);
-% wandY12 = wandY12([1:end_point]);
-% wandY13 = wandY13([1:end_point]);
-% Tracker1 = Tracker1([1:end_point]);
-% Tracker2 = Tracker2([1:end_point]);
-% Tracker3 = Tracker3([1:end_point]);
+%%%%Extract only i 2505~2532)
+start_point = 900;
+end_point = 1000;
+wandO1 = wandO1([start_point:end_point]);
+wandO2 = wandO2([start_point:end_point]);
+wandO3 = wandO3([start_point:end_point]);
+wandX1 = wandX1([start_point:end_point]);
+wandX2 = wandX2([start_point:end_point]);
+wandX3 = wandX3([start_point:end_point]);
+wandY11 = wandY11([start_point:end_point]);
+wandY12 = wandY12([start_point:end_point]);
+wandY13 = wandY13([start_point:end_point]);
+Tracker1 = Tracker1([start_point:end_point]);
+Tracker2 = Tracker2([start_point:end_point]);
+Tracker3 = Tracker3([start_point:end_point]);
 
-% Tracker11 = Tracker1(1:round(length(Tracker1)/2));
-% Tracker22 = Tracker2(1:round(length(Tracker2)/2));
-% Tracker33 = Tracker3(1:round(length(Tracker3)/2));
 
 Tracker2 = -Tracker2;
 GlobalCoord = [1,0,0,0;
@@ -71,7 +68,6 @@ GlobalCoord = [1,0,0,0;
             end
 
             
-
             X = Track(:,1:3);
             Y = [Tracker1,Tracker2,Tracker3];
             
@@ -87,54 +83,93 @@ GlobalCoord = [1,0,0,0;
             
             [d,Z,transform] = procrustes(X,Y,'scaling',false);
             T = transform.T;
-%             %%%Considering delay problem
-%             delay = 4;
-%             new_length = length(X)-delay;
-%             T = X(delay:new_length+delay-1,:);
-%             X = [];
-%             X = T;
-%             TT = Z(1:new_length,:);
-%             Z = [];
-%             Z = TT;
+
             Error = X - Z;
-            error_abs = [mean(abs(Error(:,1))),mean(abs(Error(:,2))),mean(abs(Error(:,3)))]
-            error_rms = [rms(Error(:,1)),rms(Error(:,2)),rms(Error(:,3))]
-            error_max = [max(Error(:,1)),max(Error(:,2)),max(Error(:,3))]
+            error_abs = [mean(abs(Error(:,1))),mean(abs(Error(:,2))),mean(abs(Error(:,3))),mean(sqrt(Error(:,1).^2+Error(:,2).^2+Error(:,3).^2))]
+            error_rms = [rms(Error(:,1)),rms(Error(:,2)),rms(Error(:,3)),rms(sqrt(Error(:,1).^2+Error(:,2).^2+Error(:,3).^2))]
+            error_max = [max(Error(:,1)),max(Error(:,2)),max(Error(:,3)),max(sqrt(Error(:,1).^2+Error(:,2).^2+Error(:,3).^2))]
             
             
             plot3(X(:,1),X(:,2),X(:,3),'r.');
             hold on
-%             plot3(Y(:,1),Y(:,2),Y(:,3),'g');
-%             hold on
             plot3(Z(:,1),Z(:,2),Z(:,3),'b.');
+            
             hold on
             for k = 1:length(Error)
                 plot3([X(k,1),Z(k,1)],[X(k,2),Z(k,2)],[X(k,3),Z(k,3)],'k-')
+                hold on
+                legend('Vicon Marker','Vive Tracker','Error')
             end
-            for k = 1:length(Error)
-                if sqrt(Error(k,1)^2 + Error(k,2)^2 + Error(k,3)^2)>50
-                     k
-                     plot3(X(k,1),X(k,2),X(k,3),'k*');
-                     hold on
-                end
-            end
-%             indexx =find()
-% %             indexy =find(abs(Error(:,2)>30));
-% %             indexz =find(abs(Error(:,3)>30));
-%             plot3(X(indexx,1),X(indexx,2),X(indexx,3),'g*');
-%             hold on
-%             plot3(X(indexy,1),X(indexy,2),X(indexy,3),'g*');
-%             hold on
-%             plot3(X(indexz,1),X(indexz,2),X(indexz,3),'g*');
-%             hold on
-            
-%             Error_xyz(j,1:3) = [x_diff;y_diff;z_diff];
-%             Error_xyz(j,4:6) = error_max;
-%             Error_xyz(j,7) = sum(error_rms);
-%         end
-%     end
-% end
+%             for k = 1:length(Error)
+%                 if sqrt(Error(k,1)^2 + Error(k,2)^2 + Error(k,3)^2)>10
+%                      k
+%                      plot3(X(k,1),X(k,2),X(k,3),'k*');
+%                      hold on
+%                 end
+%             end
 
+
+%             for k = 1:20:length(Error)
+%                 subplot(3,1,1);
+%                 plot(1:k,X(1:k,1),'r-')
+%                 hold on
+%                 subplot(3,1,1);
+%                 plot(1:k,Z(1:k,1),'b-')
+%                 hold on
+%                 title('Circle Movement')
+%                 legend('Vicon Marker','Vive Tracker')
+%                 xlabel('X Axis')
+%                 subplot(3,1,2);
+%                 plot(1:k,X(1:k,2),'r-')
+%                 hold on
+%                 subplot(3,1,2);
+%                 plot(1:k,Z(1:k,2),'b-')
+%                 hold on
+%                 legend('Vicon Marker','Vive Tracker')
+%                 xlabel('Y Axis')
+%                 subplot(3,1,3);
+%                 plot(1:k,X(1:k,3),'r-')
+%                 hold on
+%                 subplot(3,1,3);
+%                 plot(1:k,Z(1:k,3),'b-')
+%                 hold on
+%                 legend('Vicon Marker','Vive Tracker')
+%                 xlabel('Z Axis')
+%                 plot3(X(1:k,1),X(1:k,2),X(1:k,3),'r-');
+%                 hold on
+%                 plot3(Z(1:k,1),Z(1:k,2),Z(1:k,3),'b-');
+%                 %legend('Vicon Marker','Vive Tracker','Error')
+%                 hold on
+% 
+%                 plot3([X(k,1),Z(k,1)],[X(k,2),Z(k,2)],[X(k,3),Z(k,3)],'k-')
+%                 hold on
+% 
+% %                 for k = 1:length(Error)
+%                     if sqrt(Error(k,1)^2 + Error(k,2)^2 + Error(k,3)^2)>30
+% % %                          k
+%                          plot3(X(k,1),X(k,2),X(k,3),'k*');
+%                          hold on
+%                     end
+% %                 end
+% 
+                 %drawnow
+                 %legend('Vicon Marker','Vive Tracker')%,'Error')
+                 %    drawnow
+                    % title('Translation Movement')
+%                 frame = getframe(1);
+%                 im = frame2im(frame);
+%                 [imind,cm] = rgb2ind(im,256);
+%                 outfile = 'circle3.gif';
+% 
+%                 if k==1
+%                     imwrite(imind,cm,outfile,'gif','DelayTime',0,'loopcount',1);
+%                 else
+%                     imwrite(imind,cm,outfile,'gif','DelayTime',0,'writemode','append');
+%                 end
+           %  end
+
+
+% 
 % Error_xyz(find(Error_xyz(:,7)==(min(Error_xyz(:,7)))),1:3)
 % Error_xyz(find(Error_xyz(:,7)==(min(Error_xyz(:,7)))),4:6)
 % size = (Error_xyz(:,7)-min(Error_xyz(:,7)))/max(Error_xyz(:,7)-min(Error_xyz(:,7)))*30 + 1;

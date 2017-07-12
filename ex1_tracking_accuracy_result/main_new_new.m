@@ -18,9 +18,6 @@
 
 Tracker2 = -Tracker2;
 
-% Tracker1 = Tracker1(round(end/1.5):end);
-% Tracker2 = Tracker2(round(end/1.5):end);
-% Tracker3 = Tracker3(round(end/1.5):end);
 
 %plot3(wandO1,wandO2,wandO3,'b-')
 %hold on
@@ -42,14 +39,14 @@ wand_new_z = (wandO3 + wandX3 + wandY13)/3;
 % end
 
 
-plot3(wand_new_x, wand_new_y, wand_new_z);
+plot3(wand_new_x, wand_new_y, wand_new_z,'r-');
 hold on
 
-plot3(wandO1(1),wandO2(1),wandO3(1),'bo')
-hold on
+% plot3(wandO1(1),wandO2(1),wandO3(1),'bo')
+% hold on
 
-plot3(Tracker1, Tracker2, Tracker3);
-hold on
+% plot3(Tracker1, Tracker2, Tracker3);
+% hold on
 
 % plot3(Tracker1,Tracker2,Tracker3,'g-')
 % hold on
@@ -62,8 +59,11 @@ Y = [Tracker1,Tracker2,Tracker3];
 [d,Z,transform] = procrustes(X,Y,'scaling',false);
 T = transform.T;
 
-plot3(Z(:,1),Z(:,2),Z(:,3),'r-')
+plot3(Z(:,1),Z(:,2),Z(:,3),'b-')
 hold on
+
+title('Rotation Movement')
+legend('Vicon Marker','Vive Tracker')
 
 Error = X-Z;
 
