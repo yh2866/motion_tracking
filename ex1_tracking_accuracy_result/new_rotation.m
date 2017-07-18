@@ -32,7 +32,7 @@ for i = 1:length(wandO1)
     x_norm = (wand_x-wand_o)/x_mod;
     y_mod  = sqrt((wandO1(i)-wandY11(i))^2 + (wandO2(i)-wandY12(i))^2 + (wandO3(i)-wandY13(i))^2);
     y_norm = (wand_y-wand_o)/y_mod;
-    z_norm = cross(x_norm,y_norm);
+    z_norm = cross(y_norm,x_norm);
 
     M = ([x_norm,0;y_norm,0;z_norm,0;wand_o,1]/GlobalCoord)';
     %The real distance:95mm 70mm -37mm
@@ -55,10 +55,10 @@ Y = TT;
 
 
 
-diff = Y(:,:,10)' / cell2mat(X(10));
+diff = Y(:,:,1)' / cell2mat(X(1));
 YY = Y;
 for i = 1:new_length
-    YY(:,:,i) = diff * cell2mat(X(i));
+    YY(:,:,i) = (diff * cell2mat(X(i)))';
 end
 YYY = zeros(new_length,4);
 for i = 1:new_length
@@ -67,7 +67,7 @@ end
 Neg = YYY(:,1);
 YYY(:,1) = Neg;
 
-YYYY = [Tracker4,-Tracker5,-Tracker6,-Tracker7];
+YYYY = -[Tracker4,Tracker5,Tracker6,Tracker7];
 
 Wand_Final = quat2eul(YYY,'ZYX');
 Tracker_Final = quat2eul(YYYY(1:new_length,:),'ZYX');
@@ -87,7 +87,9 @@ for i = 1:new_length
         end
     end
 end
-plot3(Wand_Final(:,1),Wand_Final(:,2),Wand_Final(:,3),'r.');
-hold on
-plot3(Tracker_Final(:,1),Tracker_Final(:,2),Tracker_Final(:,3),'b.');
-hold on
+
+    plot3(Wand_Final(1:i,1),Wand_Final(1:i,2),Wand_Final(1:i,3),'r.');
+    hold on
+    plot3(Tracker_Final(1:i,1),Tracker_Final(1:i,2),Tracker_Final(1:i,3),'b.');
+    hold on
+    %drawnow

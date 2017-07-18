@@ -24,6 +24,7 @@ for i = 1:20:length(wandO1)
 %     else
 %         imwrite(imind,cm,outfile,'gif','DelayTime',0,'writemode','append');
 %     end
+
 end
 
 
