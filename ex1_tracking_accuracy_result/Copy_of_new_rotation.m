@@ -92,7 +92,10 @@ i = new_length;
       hold on
       plot(1:i,Error(1:i,1),'k.')
       hold on
+      xlabel('Time')
+      ylabel('Z Rotation(Degree)');
       legend('Wand','Tracker','Error')
+      title('Euler Angles Comparison (ZYX)')
       subplot(3,1,2);
       plot(1:i,Wand_Final(1:i,2)*180/pi,'r.')
       hold on
@@ -100,6 +103,8 @@ i = new_length;
       hold on
       plot(1:i,Error(1:i,2),'k.')
       hold on
+      xlabel('Time')
+      ylabel('Y Rotation(Degree)');
       legend('Wand','Tracker','Error')
       subplot(3,1,3);
       plot(1:i,Wand_Final(1:i,3)*180/pi,'r.')
@@ -109,6 +114,8 @@ i = new_length;
       plot(1:i,Error(1:i,3),'k.')
       hold on
       legend('Wand','Tracker','Error')
+      ylabel('X Rotation(Degree)');
+      xlabel('Time')
 
 error_abs = [mean(Error)]
 error_rms = [rms(Error)]

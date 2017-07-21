@@ -52,8 +52,8 @@ YYY(:,1) = Neg;
 
 YYYY = [Tracker7,Tracker4,Tracker5,Tracker6];
 
-Wand_Final = quat2eul(YYY,'ZYX');
-Tracker_Final = quat2eul(YYYY(1:new_length,:),'ZYX');
+Wand_Final = quat2eul(YYY,'ZYZ');
+Tracker_Final = quat2eul(YYYY(1:new_length,:),'Z');
 
 Neg = Wand_Final(:,1);
 Wand_Final(:,1) = -Neg;
@@ -78,33 +78,48 @@ error_euler = zeros(new_length,3);
 %         end
 %     end
 
+Error = abs(Wand_Final - Tracker_Final);
+I = Error>pi;
+Error(I) = Error(I) - 2*pi;
+Error = abs(Error / pi * 180);
+
+
 i = new_length;
       subplot(3,1,1);
       plot(1:i,Wand_Final(1:i,1)*180/pi,'r.')
       hold on
       plot(1:i,Tracker_Final(1:i,1)*180/pi,'b.')
       hold on
-      plot(1:i,abs(Wand_Final(1:i,1)*180/pi - Tracker_Final(1:i,1)*180/pi),'k.')
+      plot(1:i,Error(1:i,1),'k.')
       hold on
+      xlabel('Time')
+      ylabel('Z Rotation(Degree)');
       legend('Wand','Tracker','Error')
+      title('Euler Angles Comparison (ZYX)')
       subplot(3,1,2);
       plot(1:i,Wand_Final(1:i,2)*180/pi,'r.')
       hold on
       plot(1:i,Tracker_Final(1:i,2)*180/pi,'b.')
       hold on
-      plot(1:i,abs(Wand_Final(1:i,2)*180/pi - Tracker_Final(1:i,2)*180/pi),'k.')
+      plot(1:i,Error(1:i,2),'k.')
       hold on
+      xlabel('Time')
+      ylabel('Y Rotation(Degree)');
       legend('Wand','Tracker','Error')
       subplot(3,1,3);
       plot(1:i,Wand_Final(1:i,3)*180/pi,'r.')
       hold on
       plot(1:i,Tracker_Final(1:i,3)*180/pi,'b.')
       hold on
-      plot(1:i,abs(Wand_Final(1:i,3)*180/pi - Tracker_Final(1:i,3)*180/pi),'k.')
+      plot(1:i,Error(1:i,3),'k.')
       hold on
       legend('Wand','Tracker','Error')
+      ylabel('X Rotation(Degree)');
+      xlabel('Time')
 
-error_rms = []
+error_abs = [mean(Error)]
+error_rms = [rms(Error)]
+error_max = [max(Error)]
 %     plot3(Wand_Final(1:i,1),Wand_Final(1:i,2),Wand_Final(1:i,3),'r.');
 %     xlabel('Z');
 %     ylabel('Y');
