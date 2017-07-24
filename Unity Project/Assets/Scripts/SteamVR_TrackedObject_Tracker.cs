@@ -47,30 +47,30 @@ public class SteamVR_TrackedObject_Tracker : MonoBehaviour
 
 
 
-	// void Save_Data(LocalData data)
-	// {
-	// 	BinaryFormatter bf = new BinaryFormatter();
-	// 	FileStream file = File.Create(Application.persistentDataPath + "data.dat");
+	void Save_Data(LocalData data)
+	{
+		BinaryFormatter bf = new BinaryFormatter();
+		FileStream file = File.Create(Application.persistentDataPath + "data.dat");
 
-	// 	Debug.Log(Application.persistentDataPath);
+		Debug.Log(Application.persistentDataPath);
 
 
-	// 	bf.Serialize(file, data);
-	// 	file.Close();
-	// }
+		bf.Serialize(file, data);
+		file.Close();
+	}
 
-// [Serializable]
-// class LocalData
-// 	{
-// 		public float pos_x;
-// 		public float pos_y;
-// 		public float pos_z;
-// 		public float rot_x;
-// 		public float rot_y;
-// 		public float rot_z;
-// 		public float rot_w;
+[Serializable]
+class LocalData
+	{
+		public string pos_x;
+		public string pos_y;
+		public string pos_z;
+		public string rot_x;
+		public string rot_y;
+		public string rot_z;
+		public string rot_w;
 
-// 	}
+	}
 
     private void OnNewPoses(TrackedDevicePose_t[] poses)
 	{
@@ -105,35 +105,19 @@ public class SteamVR_TrackedObject_Tracker : MonoBehaviour
 			transform.localPosition = pose.pos;
 			transform.localRotation = pose.rot;
 
-			//LocalData data = new LocalData();
+			LocalData data = new LocalData();
 
-			// data.pos_x = transform.localPosition.x;
-			// data.pos_y = transform.localPosition.y;
-			// data.pos_z = transform.localPosition.z;
-			// data.rot_x = transform.localRotation.x;
-			// data.rot_y = transform.localRotation.y;
-			// data.rot_z = transform.localRotation.z;
-			// data.rot_w = transform.localRotation.w;
+			data.pos_x = transform.localPosition.x.ToString();
+			data.pos_y = transform.localPosition.y.ToString();
+			data.pos_z = transform.localPosition.z.ToString();
+			data.rot_x = transform.localRotation.x.ToString();
+			data.rot_y = transform.localRotation.y.ToString();
+			data.rot_z = transform.localRotation.z.ToString();
+			data.rot_w = transform.localRotation.w.ToString();
 
 
-		 	//Save_Data(data);
+		 	Save_Data(data);
 
-		 	//	
-			// if (!File.Exists("TestFile.txt"))
-			// {
-				using (StreamWriter sw = new StreamWriter("TestFile.txt"))
-				{
-					sw.Write("The data is:");
-					//sw.WriteLine(DataTime.now);
-					Debug.Log(()
-				}
-
-			// }
-			// else
-			// {
-			// 	sw.Write("The data is:");
-			// 	sw.WriteLine(DataTime.now);
-			// }
 			// float pos_x = transform.localPosition.x;
 			// float pos_y = transform.localPosition.y;
 			// float pos_z = transform.localPosition.z;
