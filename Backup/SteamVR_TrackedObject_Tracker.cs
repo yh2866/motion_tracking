@@ -7,12 +7,6 @@
 using UnityEngine;
 using Valve.VR;
 using System;
-using System.Collections;
-using System.IO;
-//using Fromatter;
-//using System.Fromatter;
-using System.Runtime.Serialization.Formatters.Binary;
-
 
 public class SteamVR_TrackedObject_Tracker : MonoBehaviour
 {
@@ -44,33 +38,6 @@ public class SteamVR_TrackedObject_Tracker : MonoBehaviour
     UDPSend sendObj = new UDPSend();
     //UDPReceive receiveObj = new UDPReceive();
 
-
-
-
-	// void Save_Data(LocalData data)
-	// {
-	// 	BinaryFormatter bf = new BinaryFormatter();
-	// 	FileStream file = File.Create(Application.persistentDataPath + "data.dat");
-
-	// 	Debug.Log(Application.persistentDataPath);
-
-
-	// 	bf.Serialize(file, data);
-	// 	file.Close();
-	// }
-
-// [Serializable]
-// class LocalData
-// 	{
-// 		public float pos_x;
-// 		public float pos_y;
-// 		public float pos_z;
-// 		public float rot_x;
-// 		public float rot_y;
-// 		public float rot_z;
-// 		public float rot_w;
-
-// 	}
 
     private void OnNewPoses(TrackedDevicePose_t[] poses)
 	{
@@ -104,47 +71,34 @@ public class SteamVR_TrackedObject_Tracker : MonoBehaviour
 		{
 			transform.localPosition = pose.pos;
 			transform.localRotation = pose.rot;
+            //Debug.Log("Print out position" + transform.position.x);
+            //if (index == EIndex.Device5)
+            // string x = (string) transform.localPosition.x;
+            // string y = (string) transform.localPosition.y;
+            // string z = (string) transform.localPosition.z;
+            // string rot_x = (string) transform.localRotation.x;
+            // string rot_y = (string) transform.localRotation.y;
+            // string rot_z = (string) transform.localRotation.z;
+            // string rot_w = (string) transform.localRotation.w;
+            // string x = transform.localPosition.x.ToString();
+            // string y = transform.localPosition.y.ToString();
+            // string z = transform.localPosition.z.ToString();
+            // string rot_x = transform.localRotation.x.ToString();
+            // string rot_y = transform.localRotation.y.ToString();
+            // string rot_z = transform.localRotation.z.ToString();
+            // string rot_w = transform.localRotation.w.ToString();
 
-			//LocalData data = new LocalData();
-
-			// data.pos_x = transform.localPosition.x;
-			// data.pos_y = transform.localPosition.y;
-			// data.pos_z = transform.localPosition.z;
-			// data.rot_x = transform.localRotation.x;
-			// data.rot_y = transform.localRotation.y;
-			// data.rot_z = transform.localRotation.z;
-			// data.rot_w = transform.localRotation.w;
-
-
-		 	//Save_Data(data);
-
-		 	//	
-			// if (!File.Exists("TestFile.txt"))
-			// {
-				using (StreamWriter sw = new StreamWriter("TestFile.txt"))
-				{
-					sw.Write("The data is:");
-					//sw.WriteLine(DataTime.now);
-					Debug.Log(()
-				}
-
-			// }
-			// else
-			// {
-			// 	sw.Write("The data is:");
-			// 	sw.WriteLine(DataTime.now);
-			// }
-			// float pos_x = transform.localPosition.x;
-			// float pos_y = transform.localPosition.y;
-			// float pos_z = transform.localPosition.z;
-			// float rot_x = transform.localRotation.x;
-			// float rot_y = transform.localRotation.y;
-			// float rot_z = transform.localRotation.z;
-			// float rot_w = transform.localRotation.w;
-   //          var floatArray = new float[] {pos_x, pos_y, pos_z, rot_x, rot_y, rot_z, rot_w};
-   //          var byteArray = new byte[floatArray.Length * 4];
-   //          Buffer.BlockCopy(floatArray, 0, byteArray, 0, byteArray.Length);
-   //          sendObj.sendByte(byteArray);
+			float pos_x = transform.localPosition.x;
+			float pos_y = transform.localPosition.y;
+			float pos_z = transform.localPosition.z;
+			float rot_x = transform.localRotation.x;
+			float rot_y = transform.localRotation.y;
+			float rot_z = transform.localRotation.z;
+			float rot_w = transform.localRotation.w;
+            var floatArray = new float[] {pos_x, pos_y, pos_z, rot_x, rot_y, rot_z, rot_w};
+            var byteArray = new byte[floatArray.Length * 4];
+            Buffer.BlockCopy(floatArray, 0, byteArray, 0, byteArray.Length);
+            sendObj.sendByte(byteArray);
 
             //sendObj.sendString(x + y + z + rot_x + rot_y + rot_z + rot_w);
             //sendObj.sendString(transform.localPosition.x.ToString() + transform.localPosition.y.ToString() + transform.localPosition.z.ToString() +
@@ -155,12 +109,10 @@ public class SteamVR_TrackedObject_Tracker : MonoBehaviour
 
 	SteamVR_Events.Action newPosesAction;
 
-
-
-
 	void Awake()
 	{
-        //sendObj.Start();
+        sendObj.Start();
+        //receiveObj.Start();
         Debug.Log("Test TrackedObject for Initial");
         newPosesAction = SteamVR_Events.NewPosesAction(OnNewPoses);
 	}
@@ -189,3 +141,4 @@ public class SteamVR_TrackedObject_Tracker : MonoBehaviour
 			this.index = (EIndex)index;
 	}
 }
+
