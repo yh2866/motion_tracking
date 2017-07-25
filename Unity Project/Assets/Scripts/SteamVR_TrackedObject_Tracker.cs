@@ -56,6 +56,13 @@ public class SteamVR_TrackedObject_Tracker : MonoBehaviour
     	{
     		Debug.Log("Start");
     		Start_Flag = true;
+    		// Debug.Log(System.DateTime.Now.Ticks/TimeSpan.TicksPerMillisecond);
+    		// Debug.Log(System.DateTime.Now);
+    		// Debug.Log(System.DateTime.UtcNow);
+    		// Debug.Log(Time.deltaTime);
+    		Debug.Log(System.DateTime.Now.Ticks);
+    		DateTime myDate = new DateTime(System.DateTime.Now.Ticks);
+    		Debug.Log(myDate);
     	}
 
     	if(GUI.Button(new Rect(10,140,100,30),"End"))
