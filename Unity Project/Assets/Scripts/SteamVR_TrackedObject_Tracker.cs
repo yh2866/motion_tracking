@@ -40,37 +40,55 @@ public class SteamVR_TrackedObject_Tracker : MonoBehaviour
 	public EIndex index;
 	public Transform origin; // if not set, relative to parent
     public bool isValid = false;
+    public bool Start_Flag = false;
+    public ArrayList myArrayList = new ArrayList();
 
     UDPSend sendObj = new UDPSend();
     //UDPReceive receiveObj = new UDPReceive();
 
 
+    void OnGUI()
+    {
+
+    	if(GUI.Button(new Rect(10,100,100,30),"Start"))
+    	{
+    		Debug.Log("Start");
+    		Start_Flag = true;
+    	}
+
+    	if(GUI.Button(new Rect(10,140,100,30),"End"))
+    	{
+
+    		Debug.Log("End");
+    		Save_Data();
+    	}
+    }
 
 
-	void Save_Data(LocalData data)
+	void Save_Data()
 	{
 		BinaryFormatter bf = new BinaryFormatter();
-		FileStream file = File.Create(Application.persistentDataPath + "data.dat");
+		FileStream file = File.Create(Application.persistentDataPath + "myArrayList.dat");
 
 		Debug.Log(Application.persistentDataPath);
 
 
-		bf.Serialize(file, data);
+		bf.Serialize(file, myArrayList);
 		file.Close();
 	}
 
-[Serializable]
-class LocalData
-	{
-		public string pos_x;
-		public string pos_y;
-		public string pos_z;
-		public string rot_x;
-		public string rot_y;
-		public string rot_z;
-		public string rot_w;
+// [Serializable]
+// class LocalData
+// 	{
+// 		public string pos_x;
+// 		public string pos_y;
+// 		public string pos_z;
+// 		public string rot_x;
+// 		public string rot_y;
+// 		public string rot_z;
+// 		public string rot_w;
 
-	}
+// 	}
 
     private void OnNewPoses(TrackedDevicePose_t[] poses)
 	{
@@ -105,18 +123,26 @@ class LocalData
 			transform.localPosition = pose.pos;
 			transform.localRotation = pose.rot;
 
-			LocalData data = new LocalData();
+			//LocalData data = new LocalData();
 
-			data.pos_x = transform.localPosition.x.ToString();
-			data.pos_y = transform.localPosition.y.ToString();
-			data.pos_z = transform.localPosition.z.ToString();
-			data.rot_x = transform.localRotation.x.ToString();
-			data.rot_y = transform.localRotation.y.ToString();
-			data.rot_z = transform.localRotation.z.ToString();
-			data.rot_w = transform.localRotation.w.ToString();
-
-
-		 	Save_Data(data);
+			// data.pos_x = transform.localPosition.x.ToString();
+			// data.pos_y = transform.localPosition.y.ToString();
+			// data.pos_z = transform.localPosition.z.ToString();
+			// data.rot_x = transform.localRotation.x.ToString();
+			// data.rot_y = transform.localRotation.y.ToString();
+			// data.rot_z = transform.localRotation.z.ToString();
+			// data.rot_w = transform.localRotation.w.ToString();
+			if(Start_Flag == true)
+			{
+				myArrayList.Add(transform.localPosition.x.ToString());
+				myArrayList.Add(transform.localPosition.y.ToString());
+				myArrayList.Add(transform.localPosition.z.ToString());
+				myArrayList.Add(transform.localRotation.x.ToString());
+				myArrayList.Add(transform.localRotation.y.ToString());
+				myArrayList.Add(transform.localRotation.z.ToString());
+				myArrayList.Add(transform.localRotation.w.ToString());
+			}
+		 	
 
 			// float pos_x = transform.localPosition.x;
 			// float pos_y = transform.localPosition.y;
