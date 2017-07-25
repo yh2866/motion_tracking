@@ -52,13 +52,18 @@ YYY(:,1) = Neg;
 
 YYYY = [Tracker7,Tracker4,Tracker5,Tracker6];
 
-Wand_Final = quat2eul(YYY,'ZYX');
-Tracker_Final = quat2eul(YYYY(1:new_length,:),'ZYX');
+Wand_Final = quat2eul(YYY,'ZYZ');
+Tracker_Final = quat2eul(YYYY(1:new_length,:),'ZYZ');
+% Wand_Final = quat2eul(YYY,'X');
+% Tracker_Final = quat2eul(YYYY(1:new_length,:),'XYZ');
+
 
 Neg = Wand_Final(:,1);
 Wand_Final(:,1) = -Neg;
 Negg = Wand_Final(:,2);
-Wand_Final(:,2) = -Negg;
+Wand_Final(:,2) = Negg;
+Neggg = Wand_Final(:,3);
+Wand_Final(:,3) = -Neggg;
 
 error_quat = abs(YYY) - abs(YYYY(1:new_length,:));
 mean(abs(error_quat))
