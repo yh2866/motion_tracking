@@ -9,6 +9,8 @@ using Valve.VR;
 using System;
 using System.Collections;
 using System.IO;
+using System.Linq;
+// using System.Collections;
 //using Fromatter;
 //using System.Fromatter;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -67,14 +69,15 @@ public class SteamVR_TrackedObject_Tracker : MonoBehaviour
 
 	void Save_Data()
 	{
-		BinaryFormatter bf = new BinaryFormatter();
-		FileStream file = File.Create(Application.persistentDataPath + "myArrayList.dat");
+		// BinaryFormatter bf = new BinaryFormatter();
+		// FileStream file = File.Create(Application.persistentDataPath + "myArrayList.dat");
 
-		Debug.Log(Application.persistentDataPath);
+		// Debug.Log(Application.persistentDataPath);
 
 
-		bf.Serialize(file, myArrayList);
-		file.Close();
+		// bf.Serialize(file, myArrayList);
+		// file.Close();
+		File.WriteAllLines(Application.persistentDataPath + "myArrayList.txt",myArrayList.Cast<string>().ToArray());
 	}
 
 // [Serializable]
