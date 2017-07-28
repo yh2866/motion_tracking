@@ -1,4 +1,6 @@
-[wandO1,wandO2,wandO3,wandX1,wandX2,wandX3,wandX4,wandX5,wandX6,wandY11,wandY12,wandY13,wandY21,wandY22,wandY23,Tracker1,Tracker2,Tracker3,Tracker4,Tracker5,Tracker6,Tracker7] = importfile('test_rotation.txt', 3, inf);
+clear
+clc
+[wandO1,wandO2,wandO3,wandX1,wandX2,wandX3,wandX4,wandX5,wandX6,wandY11,wandY12,wandY13,wandY21,wandY22,wandY23,Tracker1,Tracker2,Tracker3,Tracker4,Tracker5,Tracker6,Tracker7] = importfile('test_translation.txt', 3, inf);
 
 GlobalCoord = [1,0,0,0;
                0,1,0,0;
@@ -26,6 +28,7 @@ Y = quat2rotm([Tracker7,Tracker4,Tracker5,Tracker6]);
 delay = 4;
 new_length = length(Track)-delay;
 T = X(delay:new_length+delay-1);
+%T = X;
 X = [];
 X = T;
 TT = Y(:,:,1:new_length);
@@ -35,7 +38,9 @@ Y = TT;
 
 
 
-diff = Y(:,:,50) / cell2mat(X(50));
+%diff = Y(:,:,50) / cell2mat(X(50));
+%diff = Y(:,:,80) / cell2mat(X(80));
+diff = Y(:,:,72) / cell2mat(X(72));
 YY = Y;
 for i = 1:new_length
     YY(:,:,i) = diff * cell2mat(X(i));
@@ -52,13 +57,17 @@ YYY(:,1) = Neg;
 
 YYYY = [Tracker7,Tracker4,Tracker5,Tracker6];
 
-Wand_Final = quat2eul(YYY,'ZYX');
-Tracker_Final = quat2eul(YYYY(1:new_length,:),'ZYX');
+% Wand_Final = quat2eul(YYY,'ZYX');
+% Tracker_Final = quat2eul(YYYY(1:new_length,:),'ZYX');
+[Wand_Final(:,1),Wand_Final(:,2),Wand_Final(:,3)] = quat2angle(YYY,'ZYX');
+[Tracker_Final(:,1),Tracker_Final(:,2),Tracker_Final(:,3)] = quat2angle(YYYY(1:new_length,:),'ZYX');
 
 Neg = Wand_Final(:,1);
 Wand_Final(:,1) = -Neg;
 Negg = Wand_Final(:,2);
 Wand_Final(:,2) = -Negg;
+Neggg = Wand_Final(:,3);
+Wand_Final(:,3) = Neggg;
 
 error_quat = abs(YYY) - abs(YYYY(1:new_length,:));
 mean(abs(error_quat))
@@ -78,48 +87,66 @@ error_euler = zeros(new_length,3);
 %         end
 %     end
 
-Error = abs(Wand_Final - Tracker_Final);
+index = abs(Wand_Final(:,2))>60/180*pi;
+
+%Error = abs(Wand_Final - Tracker_Final);
+Error = Wand_Final - Tracker_Final;
+Error(index,1:3) = NaN;
 I = Error>pi;
 Error(I) = Error(I) - 2*pi;
-Error = abs(Error / pi * 180);
-
+J = Error<-pi;
+Error(J) = Error(J) + 2*pi;
+%Error = abs(Error / pi * 180);
+Error = Error / pi * 180;
 
 i = new_length;
       subplot(3,1,1);
+      yyaxis left
       plot(1:i,Wand_Final(1:i,1)*180/pi,'r.')
       hold on
+      yyaxis left
       plot(1:i,Tracker_Final(1:i,1)*180/pi,'b.')
       hold on
+      ylabel('Z Rotation(Degree)');
+      yyaxis right
       plot(1:i,Error(1:i,1),'k.')
       hold on
       xlabel('Time')
-      ylabel('Z Rotation(Degree)');
       legend('Wand','Tracker','Error')
+      ylabel('Error')
       title('Euler Angles Comparison (ZYX)')
       subplot(3,1,2);
+      yyaxis left
       plot(1:i,Wand_Final(1:i,2)*180/pi,'r.')
       hold on
+      yyaxis left
       plot(1:i,Tracker_Final(1:i,2)*180/pi,'b.')
       hold on
+      ylabel('Y Rotation(Degree)');
+      yyaxis right
       plot(1:i,Error(1:i,2),'k.')
       hold on
       xlabel('Time')
-      ylabel('Y Rotation(Degree)');
+      ylabel('Error')
       legend('Wand','Tracker','Error')
       subplot(3,1,3);
+      yyaxis left
       plot(1:i,Wand_Final(1:i,3)*180/pi,'r.')
       hold on
+      yyaxis left
       plot(1:i,Tracker_Final(1:i,3)*180/pi,'b.')
       hold on
+      ylabel('X Rotation(Degree)');
+      yyaxis right
       plot(1:i,Error(1:i,3),'k.')
       hold on
-      legend('Wand','Tracker','Error')
-      ylabel('X Rotation(Degree)');
       xlabel('Time')
+      ylabel('Error')
+      legend('Wand','Tracker','Error')
 
-error_abs = [mean(Error)]
-error_rms = [rms(Error)]
-error_max = [max(Error)]
+error_abs = [mean(Error,'omitnan')]
+error_rms = [rms(Error,'omitnan')]
+error_max = [max(abs(Error))]
 %     plot3(Wand_Final(1:i,1),Wand_Final(1:i,2),Wand_Final(1:i,3),'r.');
 %     xlabel('Z');
 %     ylabel('Y');
