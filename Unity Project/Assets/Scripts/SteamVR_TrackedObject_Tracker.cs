@@ -14,6 +14,47 @@ using System.Linq;
 //using Fromatter;
 //using System.Fromatter;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Runtime.InteropServices;
+
+public class HighResolutionDateTime
+{
+    public static bool IsAvailable { get; private set; }
+
+    [DllImport("Kernel32.dll", CallingConvention = CallingConvention.Winapi)]
+    private static extern void GetSystemTimePreciseAsFileTime(out long filetime);
+
+    public static DateTime UtcNow
+    {
+        get
+        {
+            if (!IsAvailable)
+            {
+                throw new InvalidOperationException(
+                    "High resolution clock isn't available.");
+            }
+
+            long filetime;
+            GetSystemTimePreciseAsFileTime(out filetime);
+
+            return DateTime.FromFileTimeUtc(filetime);
+        }
+    }
+
+    static HighResolutionDateTime()
+    {
+        try
+        {
+            long filetime;
+            GetSystemTimePreciseAsFileTime(out filetime);
+            IsAvailable = true;
+        }
+        catch (EntryPointNotFoundException)
+        {
+            // Not running Windows 8 or higher.
+            IsAvailable = false;
+        }
+    }
+}
 
 
 public class SteamVR_TrackedObject_Tracker : MonoBehaviour
@@ -45,8 +86,12 @@ public class SteamVR_TrackedObject_Tracker : MonoBehaviour
     public bool Start_Flag = false;
     public ArrayList myArrayList = new ArrayList();
 
+    public DateTime Time_Pre;
+
+
     UDPSend sendObj = new UDPSend();
     //UDPReceive receiveObj = new UDPReceive();
+
 
 
     void OnGUI()
@@ -60,9 +105,14 @@ public class SteamVR_TrackedObject_Tracker : MonoBehaviour
     		// Debug.Log(System.DateTime.Now);
     		// Debug.Log(System.DateTime.UtcNow);
     		// Debug.Log(Time.deltaTime);
-    		Debug.Log(System.DateTime.Now.Ticks);
-    		DateTime myDate = new DateTime(System.DateTime.Now.Ticks);
-    		Debug.Log(myDate);
+    		//Debug.Log(System.DateTime.Now.Ticks);
+    		//DateTime myDate = new DateTime(System.DateTime.Now.Ticks);
+    		//HighResolutionDateTime myDate = new HighResolutionDateTime();
+    		var precise_time = HighResolutionDateTime.UtcNow;
+    		Debug.Log(precise_time);
+    		TimeSpan diff = HighResolutionDateTime.UtcNow - Time_Pre;
+    		Debug.Log(diff);
+    		//Time_Pre = HighResolutionDateTime.UtcNow;
     	}
 
     	if(GUI.Button(new Rect(10,140,100,30),"End"))
@@ -144,6 +194,9 @@ public class SteamVR_TrackedObject_Tracker : MonoBehaviour
 			// data.rot_w = transform.localRotation.w.ToString();
 			if(Start_Flag == true)
 			{
+				TimeSpan diff = HighResolutionDateTime.UtcNow - Time_Pre;
+				myArrayList.Add(HighResolutionDateTime.UtcNow.ToString());
+				myArrayList.Add(diff.ToString());
 				myArrayList.Add(transform.localPosition.x.ToString());
 				myArrayList.Add(transform.localPosition.y.ToString());
 				myArrayList.Add(transform.localPosition.z.ToString());
@@ -151,6 +204,7 @@ public class SteamVR_TrackedObject_Tracker : MonoBehaviour
 				myArrayList.Add(transform.localRotation.y.ToString());
 				myArrayList.Add(transform.localRotation.z.ToString());
 				myArrayList.Add(transform.localRotation.w.ToString());
+				//myArrayList.Add(Time_Pre.ToString());
 			}
 		 	
 
