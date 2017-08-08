@@ -119,6 +119,29 @@ end
 %%
 X = Track(:,1:3);
 Y = Vive;
+
+[d,Z,transform] = procrustes(X,Y,'scaling',false);
+T = transform.T;
+
+i = length(X);
+
+figure(2)
+subplot(3,1,1)
+plot(TimeLine_Vive, X(1:i,1),'r.',TimeLine_Vive,Z(1:i,1),'b.')
+legend('Vicon','Vive')
+ylabel('X')
+title('Without Sync')
+hold on
+subplot(3,1,2)
+plot(TimeLine_Vive, X(1:i,2),'r.',TimeLine_Vive,Z(1:i,2),'b.')
+ylabel('Y')
+legend('Vicon','Vive')
+hold on
+subplot(3,1,3)
+plot(TimeLine_Vive, X(1:i,3),'r.',TimeLine_Vive,Z(1:i,3),'b.')
+ylabel('Z')
+legend('Vicon','Vive')
+hold on
 % 
 %%Considering delay problem
 %delay = 192;
@@ -134,22 +157,27 @@ X = TT;
 [d,Z,transform] = procrustes(X,Y,'scaling',false);
 T = transform.T;
 
-%for i = 1:10:new_length
-%for i = 1:10:length(X)
+TimeLine_Vive = TimeLine_Vive(delay:new_length+delay-1);
+
 i = new_length;
-%i = length(X);
-figure(1)
-plot3(X(1:i,1),X(1:i,2),X(1:i,3),'r.')
-xlabel('X')
+figure(3)
+subplot(3,1,1)
+
+plot(TimeLine_Vive, X(1:i,1),'r.',TimeLine_Vive,Z(1:i,1),'b.')
+legend('Vicon','Vive')
+ylabel('X')
+title('With Sync')
+hold on
+subplot(3,1,2)
+plot(TimeLine_Vive, X(1:i,2),'r.',TimeLine_Vive,Z(1:i,2),'b.')
 ylabel('Y')
-zlabel('Z')
+legend('Vicon','Vive')
 hold on
-plot3(Z(1:i,1),Z(1:i,2),Z(1:i,3),'b.')
+subplot(3,1,3)
+plot(TimeLine_Vive, X(1:i,3),'r.',TimeLine_Vive,Z(1:i,3),'b.')
+ylabel('Z')
+legend('Vicon','Vive')
 hold on
-for i = 1:length(X)
-plot3([X(i,1),Z(i,1)],[X(i,2),Z(i,2)],[X(i,3),Z(i,3)],'k-')
-hold on
-end
 %drawnow
 %end
 

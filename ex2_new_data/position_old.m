@@ -1,3 +1,6 @@
+clear
+clc
+
 [Time_Vicon,wandO1,wandO2,wandO3,wandX1,wandX2,wandX3,wandX4,wandX5,wandX6,wandY11,wandY12,wandY13,wandY21,wandY22,wandY23,Tracker1,Tracker2,Tracker3,Tracker4,Tracker5,Tracker6,Tracker7] = importfile_vicon('./Test_Vicon/test_vicon_translate.txt');
 
 str_vicon = string(Time_Vicon);
@@ -13,10 +16,10 @@ for i = 1:length(Data_Vive)/8
     X_Pos_Vive(i,:) = str2double(string(Data_Vive(8*i-6)));
     Y_Pos_Vive(i,:) = str2double(string(Data_Vive(8*i-5)));
     Z_Pos_Vive(i,:) = str2double(string(Data_Vive(8*i-4)));
-    X_Rot_Vive(i,:) = str2double(string(Data_Vive(8*i-3)));
-    Y_Rot_Vive(i,:) = str2double(string(Data_Vive(8*i-2)));
-    Z_Rot_Vive(i,:) = str2double(string(Data_Vive(8*i-1)));
-    W_Rot_Vive(i,:) = str2double(string(Data_Vive(8*i)));
+%     X_Rot_Vive(i,:) = str2double(string(Data_Vive(8*i-3)));
+%     Y_Rot_Vive(i,:) = str2double(string(Data_Vive(8*i-2)));
+%     Z_Rot_Vive(i,:) = str2double(string(Data_Vive(8*i-1)));
+%     W_Rot_Vive(i,:) = str2double(string(Data_Vive(8*i)));
 end
 
 for i = 1:length(Time_Vive)
@@ -28,10 +31,6 @@ TimeLine_Vive = D(:,2)*60 + D(:,3);
 
 Vive = [X_Pos_Vive*1000,Y_Pos_Vive*1000,Z_Pos_Vive*1000];
 Vive_Interp = interp1(TimeLine_Vive,Vive,TimeLine_Vicon);
-
-% Vive_Interp(:,1) = Vive_Interp(:,1)-Vive_Interp(1,1);
-% Vive_Interp(:,2) = Vive_Interp(:,2)-Vive_Interp(1,2);
-% Vive_Interp(:,3) = Vive_Interp(:,3)-Vive_Interp(1,3);
 
 GlobalCoord = [1,0,0,0;
                0,1,0,0;
@@ -51,41 +50,43 @@ for i = 1:length(wandO1)
 
     M = ([x_norm,0;y_norm,0;z_norm,0;wand_o,1]/GlobalCoord)';
     %The real distance:95mm 70mm -37mm
-    Track(i,:) = M*[95,70,-30,1]';
+    Track(i,:) = M*[95,70,-37,1]';
 end
 %%
 X = Track(:,1:3);
 Y = Vive_Interp;
-%Y(:,1) = Y(:,1);
-%Y(:,2) = Y(:,2);
-% YY = Vive_Interp;
-% YY(:,1) = -YY(:,1);
-% YY(:,2) = -YY(:,2);
-% X(:,1) = -X(:,1);
-% X(:,2) = -X(:,2);
 
+%%Considering delay problem
+delay = 191;
+new_length = length(X)-delay;
+T = X(delay:new_length+delay-1,:);
+X = [];
+X = T;
+TT = Y(1:new_length,:);
+Y = [];
+Y = TT;
 
 [d,Z,transform] = procrustes(X,Y,'scaling',false);
 T = transform.T;
 
-%%
-%plot(TimeLine_Vicon,X(:,2),TimeLine_Vicon,-Z(:,2))
-%for i = 1:100:length(X)
+% for i = 1:10:new_length
+i = new_length;
 figure(1)
-% plot3(X(:,1),X(:,2),X(:,3))
-plot3(X(1:i,1),X(1:i,2),X(1:i,3))
+plot3(X(1:i,1),X(1:i,2),X(1:i,3),'r.')
 xlabel('X')
 ylabel('Y')
 zlabel('Z')
 hold on
-% plot3(Z(:,1),Z(:,2),Z(:,3))
-plot3(Z(1:i,1),Z(1:i,2),Z(1:i,3))
-xlabel('X')
-ylabel('Y')
-zlabel('Z')
+plot3(Z(1:i,1),Z(1:i,2),Z(1:i,3),'b.')
 hold on
-%drawnow
-%end
+% plot3([X(i,1),Z(i,1)],[X(i,2),Z(i,2)],[X(i,3),Z(i,3)],'k-')
+% hold on
+% drawnow
+% end
+
+% for k = 1:new_length
+% plot3([X(k,1),Z(k,1)],[X(k,2),Z(k,2)],[X(k,3),Z(k,3)],'k-')
+% end
 %%
 Error = X - Z;
 error_abs = [mean(abs(Error(:,1))),mean(abs(Error(:,2))),mean(abs(Error(:,3))),mean(sqrt(Error(:,1).^2+Error(:,2).^2+Error(:,3).^2))]
