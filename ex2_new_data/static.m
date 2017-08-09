@@ -52,9 +52,9 @@ hold on
 xlabel('Time')
 ylabel('Y Position(mm)')
 subplot(3,1,3)
-plot(TimeLine_Vicon,wandO3-wandO3(1),'r')
+plot(TimeLine_Vicon,wandO3-wandO3(1),'r.')
 hold on
-plot(TimeLine_Vive,(Z_Pos_Vive-Z_Pos_Vive(1))*1000,'b')
+plot(TimeLine_Vive,(Z_Pos_Vive-Z_Pos_Vive(1))*1000,'b.')
 legend('Vicon','Vive')
 hold on
 xlabel('Time')
@@ -68,10 +68,10 @@ Wand_X_Abs_Mean = mean(abs(wandO1-wandO1(1)))
 Wand_Y_Abs_Mean = mean(abs(wandO2-wandO2(1)))
 Wand_Z_Abs_Mean = mean(abs(wandO3-wandO3(1)))
 
-% Vive_X_Mean = mean((X_Pos_Vive-X_Pos_Vive(1))*1000)
-% Vive_Y_Mean = mean((Y_Pos_Vive-Y_Pos_Vive(2))*1000)
-% Vive_Z_Mean = mean((Z_Pos_Vive-Z_Pos_Vive(3))*1000)
+% Vive_X_Mean = mean((X_Pos_Vive-X_Pos_Vive(10))*1000)
+% Vive_Y_Mean = mean((Y_Pos_Vive-Y_Pos_Vive(10))*1000)
+% Vive_Z_Mean = mean((Z_Pos_Vive-Z_Pos_Vive(10))*1000)
 
-Vive_X_Abs_Mean = mean(abs((X_Pos_Vive-X_Pos_Vive(1))*1000))
-Vive_Y_Abs_Mean = mean(abs((Y_Pos_Vive-Y_Pos_Vive(2))*1000))
-Vive_Z_Abs_Mean = mean(abs((Z_Pos_Vive-Z_Pos_Vive(3))*1000))
+Vive_X_Abs_Mean = mean(abs((X_Pos_Vive-X_Pos_Vive(10))*1000))
+Vive_Y_Abs_Mean = mean(abs((Y_Pos_Vive-Y_Pos_Vive(10))*1000))
+Vive_Z_Abs_Mean = mean(abs((Z_Pos_Vive-Z_Pos_Vive(10))*1000))
