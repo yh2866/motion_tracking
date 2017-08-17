@@ -1,7 +1,7 @@
 clear
 clc
 
-[Time_Vicon,wandO1,wandO2,wandO3,wandX1,wandX2,wandX3,wandX4,wandX5,wandX6,wandY11,wandY12,wandY13,wandY21,wandY22,wandY23,Tracker1,Tracker2,Tracker3,Tracker4,Tracker5,Tracker6,Tracker7] = importfile_vicon('./Test_Vicon/test_vicon_rand1.txt');
+[Time_Vicon,wandO1,wandO2,wandO3,wandX1,wandX2,wandX3,wandX4,wandX5,wandX6,wandY11,wandY12,wandY13,wandY21,wandY22,wandY23,Tracker1,Tracker2,Tracker3,Tracker4,Tracker5,Tracker6,Tracker7] = importfile_vicon('./Test_Vicon/test_vicon_translate.txt');
 
 str_vicon = string(Time_Vicon);
 for i = 1:length(str_vicon)
@@ -11,7 +11,7 @@ end
 TimeLine_Vicon = C(:,2)*60 + C(:,3);
 TimeLine_Vicon_Test = C(:,2)*60 + C(:,3);
 
-Data_Vive = importfile_vive('./Test_Vive/tracker_rand1.txt');
+Data_Vive = importfile_vive('./Test_Vive/tracker_translate.txt');
 for i = 1:length(Data_Vive)/8
     Time_Vive(i,:) = string(Data_Vive(8*i-7));
     X_Pos_Vive(i,:) = str2double(string(Data_Vive(8*i-6)));
@@ -33,8 +33,7 @@ TimeLine_Vive_Test = D(:,2)*60 + D(:,3);
 
 
 % %%%Translation
-%delay = 0.9845;
-%delay = 0;
+delay = 0.9845;
 % %0.97  - 10.93
 % %0.98  - 5.98
 % %0.983 - 5.20
@@ -60,11 +59,10 @@ TimeLine_Vive_Test = D(:,2)*60 + D(:,3);
 %1.00 - 49.57
 
 %%%Rand
-%delay = 1;
-delay = 0.892;
+%delay = 0.88;
 %0.86 - 9.46
 %0.87 - 6.81
-%0.875- 6.09
+%0.875- 6.81
 %0.88 - 5.97
 %0.885- 6.81
 %0.89 - 8.10
@@ -77,19 +75,13 @@ delay = 0.892;
 
 
 
-%TimeLine_Vicon_Min = min(TimeLine_Vicon);
+TimeLine_Vicon_Min = min(TimeLine_Vicon);
 %rot
 %TimeLine_Vicon_Min = 21*60 + 50.026780605;
 %rand1
-TimeLine_Vicon_Min = 26*60 + 15.976075172;
+%TimeLine_Vicon_Min = 26*60 + 15.976075172;
 %rand2
 %TimeLine_Vicon_Min = 27*60 + 56.435665130;
-
-%%%
-%New Vicon_translate1
-%TimeLine_Vicon_Min = 28*60 + 27.718535900;
-
-
 
 TimeLine_Vicon_Max = max(TimeLine_Vicon);
 TimeLine_Vive_Min = min(TimeLine_Vive);
@@ -103,8 +95,8 @@ if (TimeLine_Vicon_Min<TimeLine_Vive_Min)
     wandX2 = wandX2(TimeLine_Vicon > TimeLine_Vive_Min+delay);
     wandX3 = wandX3(TimeLine_Vicon > TimeLine_Vive_Min+delay);
     wandY11 = wandY11(TimeLine_Vicon > TimeLine_Vive_Min+delay);
-    wandY12 = wandY12(TimeLine_Vicon > TimeLine_Vive_Min+delay);
-    wandY13 = wandY13(TimeLine_Vicon > TimeLine_Vive_Min+delay);
+    wandY12 = wandY11(TimeLine_Vicon > TimeLine_Vive_Min+delay);
+    wandY13 = wandY11(TimeLine_Vicon > TimeLine_Vive_Min+delay);
     TimeLine_Vicon = TimeLine_Vicon(TimeLine_Vicon > TimeLine_Vive_Min+delay);
 end
 if (TimeLine_Vive_Min<TimeLine_Vicon_Min)
@@ -165,15 +157,15 @@ Vicon_Interp_Y = interp1(TimeLine_Vicon,[wandY11,wandY12,wandY13],TimeLine_Vive)
 % plot(TimeLine_Vive,Vicon_Interp_O(:,1),'r.');
 % hold on
 
-wandO1 = Vicon_Interp_O(3:end-1,1);
-wandO2 = Vicon_Interp_O(3:end-1,2);
-wandO3 = Vicon_Interp_O(3:end-1,3);
-wandX1 = Vicon_Interp_X(3:end-1,1);
-wandX2 = Vicon_Interp_X(3:end-1,2);
-wandX3 = Vicon_Interp_X(3:end-1,3);
-wandY11 = Vicon_Interp_Y(3:end-1,1);
-wandY12 = Vicon_Interp_Y(3:end-1,2);
-wandY13 = Vicon_Interp_Y(3:end-1,3);
+wandO1 = Vicon_Interp_O(2:end-1,1);
+wandO2 = Vicon_Interp_O(2:end-1,2);
+wandO3 = Vicon_Interp_O(2:end-1,3);
+wandX1 = Vicon_Interp_X(2:end-1,1);
+wandX2 = Vicon_Interp_X(2:end-1,2);
+wandX3 = Vicon_Interp_X(2:end-1,3);
+wandY11 = Vicon_Interp_Y(2:end-1,1);
+wandY12 = Vicon_Interp_Y(2:end-1,2);
+wandY13 = Vicon_Interp_Y(2:end-1,3);
 
 
 % 
@@ -203,11 +195,11 @@ for i = 1:length(wandO1)
 end
 %%
 X = Track(:,1:3);
-Y = Vive(3:end-1,:);
+Y = Vive(2:end-1,:);
 
 %X = X(2:end-1,:);
 %Y = Y(2:end-1,:);
-TimeLine_Vive = TimeLine_Vive(3:end-1);
+TimeLine_Vive = TimeLine_Vive(2:end-1);
 
 [d,Z,transform] = procrustes(X,Y,'scaling',false);
 T = transform.T;
@@ -228,8 +220,6 @@ for k = 1:length(X)
 end
 
 Error = X - Z;
-
-Error(abs(Error)>20) = 0
 
 figure(2)
 subplot(3,1,1)
@@ -268,3 +258,6 @@ hold on
 error_abs = [mean(abs(Error(:,1))),mean(abs(Error(:,2))),mean(abs(Error(:,3))),mean(sqrt(Error(:,1).^2+Error(:,2).^2+Error(:,3).^2))]
 error_rms = [rms(Error(:,1)),rms(Error(:,2)),rms(Error(:,3)),rms(sqrt(Error(:,1).^2+Error(:,2).^2+Error(:,3).^2))]
 error_max = [max(Error(:,1)),max(Error(:,2)),max(Error(:,3)),max(sqrt(Error(:,1).^2+Error(:,2).^2+Error(:,3).^2))]
+
+error_rms_geo = rms(sqrt(Error(:,1).^2 + Error(:,2).^2 + Error(:,3).^2))
+error_max = max(sqrt(Error(:,1).^2 + Error(:,2).^2 + Error(:,3).^2))

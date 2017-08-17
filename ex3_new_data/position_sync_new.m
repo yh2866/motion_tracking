@@ -1,7 +1,7 @@
 clear
 clc
 
-[Time_Vicon,wandO1,wandO2,wandO3,wandX1,wandX2,wandX3,wandX4,wandX5,wandX6,wandY11,wandY12,wandY13,wandY21,wandY22,wandY23,Tracker1,Tracker2,Tracker3,Tracker4,Tracker5,Tracker6,Tracker7] = importfile_vicon('./Test_Vicon/test_vicon_rand1.txt');
+[Time_Vicon,wandO1,wandO2,wandO3,wandX1,wandX2,wandX3,wandX4,wandX5,wandX6,wandY11,wandY12,wandY13,wandY21,wandY22,wandY23,Tracker1,Tracker2,Tracker3,Tracker4,Tracker5,Tracker6,Tracker7] = importfile_vicon('./test4/test4_translate.txt');
 
 str_vicon = string(Time_Vicon);
 for i = 1:length(str_vicon)
@@ -11,7 +11,7 @@ end
 TimeLine_Vicon = C(:,2)*60 + C(:,3);
 TimeLine_Vicon_Test = C(:,2)*60 + C(:,3);
 
-Data_Vive = importfile_vive('./Test_Vive/tracker_rand1.txt');
+Data_Vive = importfile_vive('./test4/tracker_translate.txt');
 for i = 1:length(Data_Vive)/8
     Time_Vive(i,:) = string(Data_Vive(8*i-7));
     X_Pos_Vive(i,:) = str2double(string(Data_Vive(8*i-6)));
@@ -33,61 +33,76 @@ TimeLine_Vive_Test = D(:,2)*60 + D(:,3);
 
 
 % %%%Translation
-%delay = 0.9845;
-%delay = 0;
-% %0.97  - 10.93
-% %0.98  - 5.98
-% %0.983 - 5.20
-% %0.984 - 5.11
-% %0.9845- 5.10
-% %0.985 - 5.10
-% %0.086 - 5.15
-% %0.988 - 5.47
-% %0.99  - 6.09
-% %1.00 - 11.09
+delay = 0.04;
+%0.03 -  4.80
+%0.035-  3.35
+%0.038-  2.84
+%0.039-  2.76
+%0.0395- 2.74
+%%%%0.04 -  2.73
+%0.0405- 2.75
+%0.041-  2.78
+%0.042-  2.89
+%0.045-  3.48
+%0.05 -  4.99
+%0.1  - 24.70
 
 %%%Rot
-%delay = 0.91;
-%0.85 - 35.04
-%0.88 - 19.14
-%0.90 - 9.81
-%0.91 - 7.41
-%0.905- 8.22
-%0.915- 7.61
-%0.92 - 8.77
-%0.93 - 12.71
-%0.95 - 22.7
-%1.00 - 49.57
-
-%%%Rand
-%delay = 1;
-delay = 0.892;
-%0.86 - 9.46
-%0.87 - 6.81
-%0.875- 6.09
-%0.88 - 5.97
-%0.885- 6.81
-%0.89 - 8.10
-%0.90 - 11.89
-%0.92 - 20.55
-%0.95 - 29.33
-%1.00 - 49.45
+%delay = 0.043;
+%0.03 - 14.35
+%0.035- 10.74
+%0.04 - 8.11
+%0.042- 7.64
+%0.0425-7.59
+%%%%0.043- 7.59
+%0.0435-7.59
+%0.044- 7.64
+%0.045- 7.81
+%0.046- 8.08
+%0.048- 8.86
+%0.05 - 10.00
 
 
+
+%%%Rand1
+%delay = 0.045;
+%0.03 - 7.31
+%0.04 - 5.83
+%0.043- 5.64
+%0.044- 5.61
+%%%%0.045- 5.59
+%0.046- 5.59
+%0.047- 5.61
+%0.048- 5.64
+%0.05 - 5.75
+%0.06-  7.12
+
+%%%Rand2
+%delay = 0.039;
+%0.03  - 15.97
+%0.035 - 11.08
+%0.038 - 9.88
+%%%%0.039 - 9.97
+%0.04  - 10.31
+%0.042 - 11.66
+%0.045 - 14.62
+%0.05  - 20.99
 
 
 
 %TimeLine_Vicon_Min = min(TimeLine_Vicon);
+%translate
+TimeLine_Vicon_Min = 7*60 + 44.509897708;
 %rot
-%TimeLine_Vicon_Min = 21*60 + 50.026780605;
+%TimeLine_Vicon_Min = 9*60 + 27.262428283;
 %rand1
-TimeLine_Vicon_Min = 26*60 + 15.976075172;
+%TimeLine_Vicon_Min = 10*60 + 34.923865795;
 %rand2
-%TimeLine_Vicon_Min = 27*60 + 56.435665130;
+%TimeLine_Vicon_Min = 11*60 + 47.692531108;
 
 %%%
 %New Vicon_translate1
-%TimeLine_Vicon_Min = 28*60 + 27.718535900;
+%TimeLine_Vicon_Min = ;
 
 
 
@@ -229,7 +244,7 @@ end
 
 Error = X - Z;
 
-Error(abs(Error)>20) = 0
+%Error(abs(Error)>20) = 0
 
 figure(2)
 subplot(3,1,1)
