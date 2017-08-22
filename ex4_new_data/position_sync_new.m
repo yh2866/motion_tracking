@@ -1,7 +1,7 @@
 clear
 clc
 
-[Time_Vicon,wandO1,wandO2,wandO3,wandX1,wandX2,wandX3,wandX4,wandX5,wandX6,wandY11,wandY12,wandY13,wandY21,wandY22,wandY23,Tracker1,Tracker2,Tracker3,Tracker4,Tracker5,Tracker6,Tracker7] = importfile_vicon('./test4/test4_random2.txt');
+[Time_Vicon,wandO1,wandO2,wandO3,wandX1,wandX2,wandX3,wandY11,wandY12,wandY13,wandX4,wandX5,wandX6,wandY21,wandY22,wandY23,Tracker1,Tracker2,Tracker3,Tracker4,Tracker5,Tracker6,Tracker7] = importfile_vicon('./test5/ViconRandom2.txt');
 
 str_vicon = string(Time_Vicon);
 for i = 1:length(str_vicon)
@@ -11,7 +11,7 @@ end
 TimeLine_Vicon = C(:,2)*60 + C(:,3);
 TimeLine_Vicon_Test = C(:,2)*60 + C(:,3);
 
-Data_Vive = importfile_vive('./test4/tracker_random2.txt');
+Data_Vive = importfile_vive('./test5/TrackerRandom2.txt');
 for i = 1:length(Data_Vive)/8
     Time_Vive(i,:) = string(Data_Vive(8*i-7));
     X_Pos_Vive(i,:) = str2double(string(Data_Vive(8*i-6)));
@@ -33,72 +33,82 @@ TimeLine_Vive_Test = D(:,2)*60 + D(:,3);
 
 
 % %%%Translation
-%delay = 0.04;
-%0.03 -  4.80
-%0.035-  3.35
-%0.038-  2.84
-%0.039-  2.76
-%0.0395- 2.74
-%%%%0.04 -  2.73
-%0.0405- 2.75
-%0.041-  2.78
-%0.042-  2.89
-%0.045-  3.48
-%0.05 -  4.99
-%0.1  - 24.70
+%delay = 0.038;
+%0.03 -  
+%0.035-  
+%0.036- 2.98
+%0.037- 2.93
+%0.038- 2.96
+%0.039- 3.05
+%0.0395- 
+%%%%0.04 -  
+%0.0405- 
+%0.041-  
+%0.042-  
+%0.045-  
+%0.05 -  
+%0.1  - 
 
 %%%Rot
-%delay = 0.043;
-%0.03 - 14.35
-%0.035- 10.74
-%0.04 - 8.11
-%0.042- 7.64
-%0.0425-7.59
-%%%%0.043- 7.59
-%0.0435-7.59
-%0.044- 7.64
-%0.045- 7.81
-%0.046- 8.08
-%0.048- 8.86
-%0.05 - 10.00
+%delay = 0.038;
+%0.033- 2.30
+%0.035- 2.24
+%0.038- 2.22
+%0.039- 2.23
+%0.040- 2.25
+%0.041- 2.27
+%0.042- 2.31
+%0.043- 2.36
+%0.0435-
+%0.044- 
+%0.045- 
+%0.046- 
+%0.048- 
+%0.05 - 
 
 
 
 %%%Rand1
-%delay = 0.045;
-%0.03 - 7.31
-%0.04 - 5.83
-%0.043- 5.64
-%0.044- 5.61
-%%%%0.045- 5.59
-%0.046- 5.59
-%0.047- 5.61
-%0.048- 5.64
-%0.05 - 5.75
-%0.06-  7.12
+%delay = 0.025;
+%0.03 - 
+%0.04 - 
+%0.043- 
+%0.044- 
+%%%%0.045- 
+%0.046- 
+%0.047- 
+%0.048-
+%0.05 -
+%0.06- 
 
 %%%Rand2
-delay = 0.039;
-%0.03  - 15.97
-%0.035 - 11.08
-%0.038 - 9.88
-%%%%0.039 - 9.97
-%0.04  - 10.31
-%0.042 - 11.66
-%0.045 - 14.62
-%0.05  - 20.99
+delay = 0.015;
+%0.010 - 10.0
+%0.013 - 7.8
+%0.015 - 7.3
+%0.018 - 8.1
+%0.020 - 9.6
+%0.025 - 14.8
+%0.03  - 
+%0.035 - 
+%0.038 -
+%%%%0.039 -
+%0.04  -
+%0.042 -
+%0.045 - 
+%0.05  - 
 
 
 
 %TimeLine_Vicon_Min = min(TimeLine_Vicon);
 %translate
-%TimeLine_Vicon_Min = 7*60 + 44.509897708;
+%TimeLine_Vicon_Min = 44*60 + 57.225734233;
 %rot
-%TimeLine_Vicon_Min = 9*60 + 27.262428283;
+%TimeLine_Vicon_Min = 48*60 + 47.248171329;
 %rand1
-%TimeLine_Vicon_Min = 10*60 + 34.923865795;
+%TimeLine_Vicon_Min = 47*60 + 00.693967342;
 %rand2
-TimeLine_Vicon_Min = 11*60 + 47.692531108;
+TimeLine_Vicon_Min = 50*60 + 45.747211933;
 
 %%%
 %New Vicon_translate1
@@ -219,11 +229,16 @@ for i = 1:length(wandO1)
 
     M = ([x_norm,0;y_norm,0;z_norm,0;wand_o,1]/GlobalCoord)';
     %The real distance:95mm 70mm -37mm
-    Track(i,:) = M*[95,70,-37,1]';
+    %Track(i,:) = M*[95,70,-37,1]';
+    Track(i,:) = M*[60,60,3,1]';
 end
 %%
-X = Track(:,1:3);
-Y = Vive(3:end-1,:);
+%X = Track(1:end,1:3);
+X = Track(1:1400,1:3);
+%Y = Vive(3:end-1,:);
+Y = Vive(1:1400,:);
+
+
 
 %X = X(2:end-1,:);
 %Y = Y(2:end-1,:);
@@ -231,6 +246,7 @@ TimeLine_Vive = TimeLine_Vive(3:end-1);
 
 [d,Z,transform] = procrustes(X,Y,'scaling',false);
 T = transform.T;
+c = transform.c;
 
 i = length(X);
 
@@ -249,7 +265,11 @@ end
 
 Error = X - Z;
 
-%Error(abs(Error)>20) = 0
+%Error(TimeLine_Vive>2837.5&TimeLine_Vive<2838,:) = NaN;
+%Error(TimeLine_Vive>2841.5&TimeLine_Vive<2842.5,:) = NaN;
+
+%TimeLine_Vive = TimeLine_Vive(1:end);
+TimeLine_Vive = TimeLine_Vive(1:1400);
 
 figure(2)
 subplot(3,1,1)
@@ -285,6 +305,101 @@ ylabel('Error(mm)')
 hold on
 %
 
-error_abs = [mean(abs(Error(:,1))),mean(abs(Error(:,2))),mean(abs(Error(:,3))),mean(sqrt(Error(:,1).^2+Error(:,2).^2+Error(:,3).^2))]
+figure(3)
+plot(X(1:i,2),Z(1:i,2),'b.');
+hold on
+
+figure(4)
+subplot(3,1,1)
+plot(TimeLine_Vive(1:end-1), diff(X(1:i,1)),'r-')
+hold on
+plot(TimeLine_Vive, Error(1:i,1),'k.')
+hold on
+subplot(3,1,2)
+plot(TimeLine_Vive(1:end-1), diff(X(1:i,2)),'r-')
+hold on
+plot(TimeLine_Vive, Error(1:i,2),'k.')
+hold on
+subplot(3,1,3)
+plot(TimeLine_Vive(1:end-1), diff(X(1:i,3)),'r-')
+hold on
+plot(TimeLine_Vive, Error(1:i,3),'k.')
+hold on
+
+figure(5)
+subplot(3,1,1)
+plot(TimeLine_Vive(1:end-1), abs(diff(X(1:i,1))),'r-','LineWidth',1)
+hold on
+plot(TimeLine_Vive, abs(Error(1:i,1)),'k.')
+hold on
+xlabel('Time(s)')
+legend('Velocity','Error')
+subplot(3,1,2)
+plot(TimeLine_Vive(1:end-1), abs(diff(X(1:i,2))),'r-','LineWidth',1)
+hold on
+plot(TimeLine_Vive, abs(Error(1:i,2)),'k.')
+hold on
+legend('Velocity','Error')
+xlabel('Time(s)')
+subplot(3,1,3)
+plot(TimeLine_Vive(1:end-1), abs(diff(X(1:i,3))),'r-','LineWidth',1)
+hold on
+plot(TimeLine_Vive, abs(Error(1:i,3)),'k.')
+hold on
+legend('Velocity','Error')
+xlabel('Time(s)')
+
+figure(6)
+subplot(3,1,1)
+plot(TimeLine_Vive(1:end-2), diff(diff(X(1:i,1))),'r-')
+hold on
+plot(TimeLine_Vive, Error(1:i,1),'k.')
+hold on
+subplot(3,1,2)
+plot(TimeLine_Vive(1:end-2), diff(diff(X(1:i,2))),'r-')
+hold on
+plot(TimeLine_Vive, Error(1:i,2),'k.')
+hold on
+subplot(3,1,3)
+plot(TimeLine_Vive(1:end-2), diff(diff(X(1:i,3))),'r-')
+hold on
+plot(TimeLine_Vive, Error(1:i,3),'k.')
+hold on
+
+figure(7)
+subplot(3,1,1)
+plot(abs(diff(X(1:i,1))), abs(Error(1:i-1,1)),'r.')
+hold on
+subplot(3,1,2)
+plot(abs(diff(X(1:i,2))), abs(Error(1:i-1,2)),'r.')
+hold on
+subplot(3,1,3)
+plot(abs(diff(X(1:i,3))), abs(Error(1:i-1,3)),'r.')
+hold on
+
+figure(8)
+subplot(3,1,1)
+histogram(diff(X(1:i,1)))
+hold on
+histogram(Error(1:i,1))
+legend('Velocity','Error')
+hold on
+subplot(3,1,2)
+histogram(diff(X(1:i,2)))
+hold on
+histogram(Error(1:i,2))
+legend('Velocity','Error')
+hold on
+subplot(3,1,3)
+histogram(diff(X(1:i,3)))
+hold on
+histogram(Error(1:i,3))
+legend('Velocity','Error')
+hold on
+
+
+
+error_abs = nanmean(abs(Error))
+%error_abs = [nanmean(abs(Error(:,1))),nanmean(abs(Error(:,2))),nanmean(abs(Error(:,3))),nanmean(sqrt(Error(:,1).^2+Error(:,2).^2+Error(:,3).^2))]
 error_rms = [rms(Error(:,1)),rms(Error(:,2)),rms(Error(:,3)),rms(sqrt(Error(:,1).^2+Error(:,2).^2+Error(:,3).^2))]
 error_max = [max(Error(:,1)),max(Error(:,2)),max(Error(:,3)),max(sqrt(Error(:,1).^2+Error(:,2).^2+Error(:,3).^2))]
