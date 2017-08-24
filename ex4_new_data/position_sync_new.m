@@ -1,3 +1,4 @@
+close all
 clear
 clc
 
@@ -306,8 +307,23 @@ hold on
 %
 
 figure(3)
-plot(X(1:i,2),Z(1:i,2),'b.');
+% subplot(3,1,1)
+plot(X(1:i,1),Z(1:i,1),'b.');
+xlabel('Vicon - X Position (mm)')
+ylabel('Vive - X Position (mm)')
 hold on
+plot([X(1,1)+150,X(i,1)-250],[X(1,1)+150,X(i,1)-250],'r-','LineWidth',1.5)
+hold on
+% subplot(3,1,2)
+% plot(X(1:i,2),Z(1:i,2),'b.');
+% xlabel('Vicon - Position (mm)')
+% ylabel('Vive - Position (mm)')
+% hold on
+% subplot(3,1,3)
+% plot(X(1:i,3),Z(1:i,3),'b.');
+% xlabel('Vicon - Position (mm)')
+% ylabel('Vive - Position (mm)')
+% hold on
 
 figure(4)
 subplot(3,1,1)
@@ -328,28 +344,41 @@ hold on
 
 figure(5)
 subplot(3,1,1)
-plot(TimeLine_Vive(1:end-1), abs(diff(X(1:i,1))),'r-','LineWidth',1)
+plot(TimeLine_Vive(1:end-1), abs(diff(X(1:i,1))),'r.')%,'LineWidth',1)
 hold on
 plot(TimeLine_Vive, abs(Error(1:i,1)),'k.')
 hold on
 xlabel('Time(s)')
+ylabel('X Axis Error(mm)')
 legend('Velocity','Error')
 subplot(3,1,2)
-plot(TimeLine_Vive(1:end-1), abs(diff(X(1:i,2))),'r-','LineWidth',1)
+plot(TimeLine_Vive(1:end-1), abs(diff(X(1:i,2))),'r.')%,'LineWidth',1)
 hold on
 plot(TimeLine_Vive, abs(Error(1:i,2)),'k.')
 hold on
 legend('Velocity','Error')
 xlabel('Time(s)')
+ylabel('Y Axis Error(mm)')
 subplot(3,1,3)
-plot(TimeLine_Vive(1:end-1), abs(diff(X(1:i,3))),'r-','LineWidth',1)
+plot(TimeLine_Vive(1:end-1), abs(diff(X(1:i,3))),'r.')%,'LineWidth',1)
 hold on
 plot(TimeLine_Vive, abs(Error(1:i,3)),'k.')
 hold on
 legend('Velocity','Error')
 xlabel('Time(s)')
+ylabel('Y Axis Error(mm)')
 
 figure(6)
+sqrt_error = sqrt(Error(1:i-1,1).^2 + Error(1:i-1,2).^2 + Error(1:i-1,3).^2);
+sqrt_diff = sqrt(diff(X(1:i,1)).^2 + diff(X(1:i,2)).^2 + diff(X(1:i,3)).^2);
+plot(TimeLine_Vive(1:end-1),sqrt_diff,'r.')%,'LineWidth',1)
+hold on
+plot(TimeLine_Vive(1:end-1), sqrt_error,'k.')
+xlabel('Time(s)')
+ylabel('Y Axis Error(mm)')
+legend('Velocity','Error')
+
+figure(7)
 subplot(3,1,1)
 plot(TimeLine_Vive(1:end-2), diff(diff(X(1:i,1))),'r-')
 hold on
@@ -366,37 +395,69 @@ hold on
 plot(TimeLine_Vive, Error(1:i,3),'k.')
 hold on
 
-figure(7)
+figure(8)
 subplot(3,1,1)
 plot(abs(diff(X(1:i,1))), abs(Error(1:i-1,1)),'r.')
+xlabel('Speed')
+ylabel('Error')
 hold on
 subplot(3,1,2)
 plot(abs(diff(X(1:i,2))), abs(Error(1:i-1,2)),'r.')
+xlabel('Speed')
+ylabel('Error')
 hold on
 subplot(3,1,3)
 plot(abs(diff(X(1:i,3))), abs(Error(1:i-1,3)),'r.')
+xlabel('Speed')
+ylabel('Error')
 hold on
 
-figure(8)
+figure(9)
+%plot(sqrt_diff, sqrt_error,'r.')
+plotregression(sqrt_diff,sqrt_error)
+xlabel('Velocity')
+ylabel('Error')
+% hold on
+
+figure(10)
 subplot(3,1,1)
-histogram(diff(X(1:i,1)))
-hold on
+% histogram(diff(X(1:i,1)))
+% hold on
 histogram(Error(1:i,1))
-legend('Velocity','Error')
+%legend('Velocity','Error')
+legend('Error')
 hold on
 subplot(3,1,2)
-histogram(diff(X(1:i,2)))
-hold on
+% histogram(diff(X(1:i,2)))
+% hold on
 histogram(Error(1:i,2))
-legend('Velocity','Error')
+%legend('Velocity','Error')
+legend('Error')
 hold on
 subplot(3,1,3)
-histogram(diff(X(1:i,3)))
-hold on
+% histogram(diff(X(1:i,3)))
+% hold on
 histogram(Error(1:i,3))
-legend('Velocity','Error')
+%legend('Velocity','Error')
+legend('Error')
 hold on
 
+
+figure(11)
+% subplot(3,1,1)
+plotregression(X(1:i,1),Z(1:i,1))
+xlabel('Vicon - X Position (mm)')
+ylabel('Vive - X Position (mm)')
+hold on
+
+
+
+figure(12)
+eerror = sqrt(X(1:i,1).^2 + X(1:i,2).^2 + X(1:i,3).^2);
+
+histogram(Error(1:i,1).*abs(Error(1:i,1)) + Error(1:i,2).^2 + Error(1:i,3).^2 )
+legend('Error')
+hold on
 
 
 error_abs = nanmean(abs(Error))
