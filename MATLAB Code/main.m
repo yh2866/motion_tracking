@@ -2,6 +2,8 @@ close all
 clear
 clc
 
+flag = 0;
+
 %import vicon data
 [TimeLine_Vicon,wandO,wandX,wandY] = import_vicon_data();
 %import vive data
@@ -32,6 +34,7 @@ wandY13 = wand_y(:,3);
 
 
 Track = zeros(length(wandO1),4);
+Trackk = cell(length(wandO1),1);
 for i = 1:length(wandO1)
     wand_o = [wandO1(i),wandO2(i),wandO3(i)];
     wand_x = [wandX1(i),wandX2(i),wandX3(i)];
@@ -43,17 +46,39 @@ for i = 1:length(wandO1)
     z_norm = cross(x_norm,y_norm);
     M = ([x_norm,0;y_norm,0;z_norm,0;wand_o,1]/GlobalCoord)';
     Track(i,:) = M*[60,60,3,1]';
+    Trackk{i} = M(1:3,1:3);
 end
 
+XX = Trackk(1:1400);
+
 X = Track(1:1400,1:3);
+%X = Track;
 Y = Vive(1:1400,1:3);
+%Y = Vive(1:2066,1:3);
+
+
+YY = quat2rotm([W_Rot_Vive,X_Rot_Vive,Y_Rot_Vive,Z_Rot_Vive]);
+YY = YY(:,:,1:1400);
+
 TimeLine_Vive = TimeLine_Vive(1:1400);
 
 [d,Z,transform] = procrustes(X,Y,'scaling',false);
 T = transform.T;
 c = transform.c;
 
+diff = T;
+
+% diff = [ 0.938, -0.359, 0.027;
+%         -0.033, -0.011, 0.999;
+%          0.358,  0.933, 0.022;];
+
 Error = X - Z;
+
+[Wand_Final,Tracker_Final,Error_Ori] = orientation(diff,XX,YY,W_Rot_Vive,X_Rot_Vive,Y_Rot_Vive,Z_Rot_Vive);
+
+
+
+
 
 %figure(1)
 plot1(X,Z)
@@ -74,7 +99,7 @@ plot8(X,Error)
 %figure(9)
 plot9(X,Error)
 %figure(10)
-plot10(X,Z)
+plot10(Wand_Final,Tracker_Final,Error_Ori)
 
 
 error_abs = nanmean(abs(Error))

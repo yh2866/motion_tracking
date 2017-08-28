@@ -168,6 +168,6 @@ end
 TimeLine_Vicon = TimeLine_Vicon-delay;
 
 
-wand_o = [wandO1,wandO2,wandO3];
-wand_x = [wandX1,wandX2,wandX3];
-wand_y = [wandY11,wandY12,wandY13];
+wand_o = [wandO1,wandO2,-wandO3];
+wand_x = [wandX1,wandX2,-wandX3];
+wand_y = [wandY11,wandY12,-wandY13];

@@ -303,7 +303,8 @@ YY = Y;
 for i = 1:length(Y)
     YY(:,:,i) = diff * cell2mat(X(i));
 end
-
+%YY(:,:,1:10)
+X(1:10)
 YYY = zeros(new_length,4);
 for i = 1:length(Y)
     YYY(i,:) = rotm2quat(YY(:,:,i));
