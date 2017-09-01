@@ -1,8 +1,8 @@
 function [wand_o,wand_x,wand_y,Vive,TimeLine_Vive] = value_interp(TimeLine_Vicon,wandO,wandX,wandY,TimeLine_Vive,X_Pos_Vive,Y_Pos_Vive,Z_Pos_Vive,X_Rot_Vive,Y_Rot_Vive,Z_Rot_Vive,W_Rot_Vive)
 
-Vicon_Interp_O = interp1(TimeLine_Vicon,wandO,TimeLine_Vive);
-Vicon_Interp_X = interp1(TimeLine_Vicon,wandX,TimeLine_Vive);
-Vicon_Interp_Y = interp1(TimeLine_Vicon,wandY,TimeLine_Vive);
+Vicon_Interp_O = interp1(TimeLine_Vicon,wandO,TimeLine_Vive,'spline');
+Vicon_Interp_X = interp1(TimeLine_Vicon,wandX,TimeLine_Vive,'spline');
+Vicon_Interp_Y = interp1(TimeLine_Vicon,wandY,TimeLine_Vive,'spline');
 
 wandO1 = Vicon_Interp_O(3:end-1,1);
 wandO2 = Vicon_Interp_O(3:end-1,2);

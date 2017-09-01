@@ -4,7 +4,7 @@ YY = Y;
 for i = 1:length(Y)
     YY(:,:,i) = diff * cell2mat(X(i));
 end
-YY(:,:,1:10)
+%YY(:,:,1:10)
 new_length = 1400;
 YYY = zeros(new_length,4);
 for i = 1:length(Y)
@@ -120,7 +120,7 @@ k = Wand_Final>pi;
 Wand_Final(k) = Wand_Final(k) - 2*pi;
 
 error_quat = abs(YYY) - abs(YYYY(1:new_length,:));
-mean(abs(error_quat))
+%mean(abs(error_quat))
 
 error_euler = zeros(new_length,3);
 
@@ -132,3 +132,9 @@ J = Error<-pi;
 Error(J) = Error(J) + 2*pi;
 %Error = abs(Error / pi * 180);
 Error = Error / pi * 180;
+
+ori_error_ave = mean(Error)
+ori_error_std = std(Error)
+ori_error_abs = mean(abs(Error))
+ori_error_rms = rms(abs(Error))
+ori_error_max = max(abs(Error))

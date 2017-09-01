@@ -1,0 +1,5 @@
+function plot14(Wand_Final,Error_Ori)
+
+w_x = diff(Wand_Final(1:end,1)).*sin(Wand_Final(1:end-1,2)).*sin(Wand_Final(1:end-1,3)) + diff(Wand_Final(1:end,2)).*cos(Wand_Final(1:end-1,3));
+
+figure
