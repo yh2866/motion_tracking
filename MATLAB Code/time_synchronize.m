@@ -93,7 +93,6 @@ TimeLine_Vicon_Max = max(TimeLine_Vicon);
 TimeLine_Vive_Min = min(TimeLine_Vive);
 TimeLine_Vive_Max = max(TimeLine_Vive);
 
-
 TimeLine_Vicon = linspace(TimeLine_Vicon_Min, TimeLine_Vicon_Max, length(TimeLine_Vicon));
 
 

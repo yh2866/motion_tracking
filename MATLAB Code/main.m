@@ -57,10 +57,14 @@ Y = Vive(1:1400,1:3);
 %Y = Vive(1:2066,1:3);
 
 
+
 YY = quat2rotm([W_Rot_Vive,X_Rot_Vive,Y_Rot_Vive,Z_Rot_Vive]);
 YY = YY(:,:,1:1400);
 
 TimeLine_Vive = TimeLine_Vive(1:1400);
+
+plot2(TimeLine_Vive,X,Y)%,Error)
+
 
 [d,Z,transform] = procrustes(X,Y,'scaling',false);
 T = transform.T;
@@ -81,9 +85,9 @@ Error = X - Z;
 
 
 %figure(1)
-plot1(X,Z)
+%plot1(X,Z)
 %figure(2)
-plot2(TimeLine_Vive,X,Z,Error)
+%plot2(TimeLine_Vive,X,Z,Error)
 
 %%%%%%%%%%%%%%%%%%%%%
 % i = length(X);
@@ -124,27 +128,27 @@ plot2(TimeLine_Vive,X,Z,Error)
 %%%%%%%%%%%%%%%%%%
 
 %figure(3)
-plot33(X,Z)
+%plot33(X,Z)
 %figure(4)
-plot4(TimeLine_Vive,X,Error)
+%plot4(TimeLine_Vive,X,Error)
 %figure(5)
-plot5(TimeLine_Vive,X,Error)
+%plot5(TimeLine_Vive,X,Error)
 %figure(6)
-plot6(TimeLine_Vive,X,Error)
+%plot6(TimeLine_Vive,X,Error)
 %figure(7)
-plot7(X,Error)
+%plot7(X,Error)
 %figure(8)
-plot8(X,Error)
+%plot8(X,Error)
 %figure(9)
-plot9(X,Error)
+%plot9(X,Error)
 %figure(10)
-plot10(Wand_Final,Tracker_Final,Error_Ori)
+%plot10(Wand_Final,Tracker_Final,Error_Ori)
 %figure(11)
-plot11(Error_Ori)
+%plot11(Error_Ori)
 %figure(12)
-plot12(Wand_Final,Error_Ori)
+%plot12(Wand_Final,Error_Ori)
 %figure(13)
-plot13(Wand_Final,Error_Ori)
+%plot13(Wand_Final,Error_Ori)
 %figure(14)
 %plot14(Wand_Final,Error_Ori)
 
