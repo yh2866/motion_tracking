@@ -74,97 +74,10 @@ TimeLine_Vicon = TimeLine_Vicon(1:1400);
 T = transform.T;
 c = transform.c;
 
-diff = T;
+%diff = T;
 
 % diff = [0.933737118547507,  -0.356905568675023, -0.0274482876580019;
 %         -0.0376318830671014,-0.0216187728621558,-0.999057791139611;
 %         0.355975890789562,   0.933890273912676, -0.0336172793052181]
-% 
-% Z = Y*diff + c;    
-    
-Error = X - Z;
 
-plot2(TimeLine_Vive,TimeLine_Vicon,X,Y,Error)
-
-[Wand_Final,Tracker_Final,Error_Ori] = orientation(diff,XX,YY,W_Rot_Vive,X_Rot_Vive,Y_Rot_Vive,Z_Rot_Vive);
-
-
-
-
-
-%figure(1)
-%plot1(X,Z)
-%figure(2)
-%plot2(TimeLine_Vive,X,Z,Error)
-
-%%%%%%%%%%%%%%%%%%%%%
-% i = length(X);
-% 
-% figure(2)
-% 
-% subplot(3,1,1)
-% yyaxis left
-% plot(TimeLine_Vive, X(1:i,1),'r.',TimeLine_Vive,Z(1:i,1),'b.')
-% xlabel('Time')
-% ylabel('X(mm)')
-% yyaxis right
-% plot(TimeLine_Vive, Error(1:i,1),'r.')
-% ylabel('Error(mm)')
-% legend('Vicon','Vive')
-% %title('Without Sync')
-% hold on
-% subplot(3,1,2)
-% yyaxis left
-% plot(TimeLine_Vive, X(1:i,2),'r.',TimeLine_Vive,Z(1:i,2),'b.')
-% xlabel('Time')
-% ylabel('Y(mm)')
-% yyaxis right
-% plot(TimeLine_Vive, Error(1:i,2),'r.')
-% ylabel('Error(mm)')
-% legend('Vicon','Vive')
-% hold on
-% subplot(3,1,3)
-% yyaxis left
-% plot(TimeLine_Vive, X(1:i,3),'r.',TimeLine_Vive,Z(1:i,3),'b.')
-% xlabel('Time')
-% ylabel('Z(mm)')
-% yyaxis right
-% plot(TimeLine_Vive, Error(1:i,3),'r.')
-% legend('Vicon','Vive')
-% ylabel('Error(mm)')
-% hold on
-%%%%%%%%%%%%%%%%%%
-
-%figure(3)
-plot33(X,Z)
-%figure(4)
-plot4(TimeLine_Vive,X,Error)
-%figure(5)
-plot5(TimeLine_Vive,X,Error)
-%figure(6)
-plot6(TimeLine_Vive,X,Error)
-%figure(7)
-plot7(X,Error)
-%figure(8)
-plot8(X,Error)
-%figure(9)
-plot9(X,Error)
-%figure(10)
-plot10(Wand_Final,Tracker_Final,Error_Ori)
-%figure(11)
-plot11(Error_Ori)
-%figure(12)
-plot12(Wand_Final,Error_Ori)
-%figure(13)
-plot13(Wand_Final,Error_Ori)
-%figure(14)
-plot14(Wand_Final,Error_Ori)
-
-pos_error_ave = mean(Error)
-pos_error_stad= std(Error)
-pos_error_abs = nanmean(abs(Error))
-
-%error_abs = [nanmean(abs(Error(:,1))),nanmean(abs(Error(:,2))),nanmean(abs(Error(:,3))),nanmean(sqrt(Error(:,1).^2+Error(:,2).^2+Error(:,3).^2))]
-pos_error_rms = [rms(Error(:,1)),rms(Error(:,2)),rms(Error(:,3)),rms(sqrt(Error(:,1).^2+Error(:,2).^2+Error(:,3).^2))]
-pos_error_max = [max(Error(:,1)),max(Error(:,2)),max(Error(:,3)),max(sqrt(Error(:,1).^2+Error(:,2).^2+Error(:,3).^2))]
-
+ZZ = Y*T + c;

@@ -1,5 +1,21 @@
 function [wand_o,wand_x,wand_y,Vive,TimeLine_Vive] = value_interp(TimeLine_Vicon,wandO,wandX,wandY,TimeLine_Vive,X_Pos_Vive,Y_Pos_Vive,Z_Pos_Vive,X_Rot_Vive,Y_Rot_Vive,Z_Rot_Vive,W_Rot_Vive)
 
+% Vive_X_Pos_Vive = interp1(TimeLine_Vive, X_Pos_Vive, TimeLine_Vicon);
+% Vive_Y_Pos_Vive = interp1(TimeLine_Vive, Y_Pos_Vive, TimeLine_Vicon);
+% Vive_Z_Pos_Vive = interp1(TimeLine_Vive, Z_Pos_Vive, TimeLine_Vicon);
+% Vive_X_Rot_Vive = interp1(TimeLine_Vive, X_Rot_Vive, TimeLine_Vicon);
+% Vive_Y_Rot_Vive = interp1(TimeLine_Vive, Y_Rot_Vive, TimeLine_Vicon);
+% Vive_Z_Rot_Vive = interp1(TimeLine_Vive, Z_Rot_Vive, TimeLine_Vicon);
+% Vive_W_Rot_Vive = interp1(TimeLine_Vive, W_Rot_Vive, TimeLine_Vicon);
+% 
+% Vive = [Vive_X_Pos_Vive*1000;Vive_Y_Pos_Vive*1000;Vive_Z_Pos_Vive*1000;Vive_X_Rot_Vive;Vive_Y_Rot_Vive;Vive_Z_Rot_Vive;Vive_W_Rot_Vive];
+% 
+% wand_o = wandO;
+% wand_x = wandX;
+% wand_y = wandY;
+% 
+% TimeLine_Vive = TimeLine_Vive;
+
 Vicon_Interp_O = interp1(TimeLine_Vicon,wandO,TimeLine_Vive);%,'spline');
 Vicon_Interp_X = interp1(TimeLine_Vicon,wandX,TimeLine_Vive);%,'spline');
 Vicon_Interp_Y = interp1(TimeLine_Vicon,wandY,TimeLine_Vive);%,'spline');
@@ -19,6 +35,8 @@ wand_x = [wandX1,wandX2,wandX3];
 wand_y = [wandY11,wandY12,wandY13];
 
 Vive = [X_Pos_Vive*1000,Y_Pos_Vive*1000,Z_Pos_Vive*1000,X_Rot_Vive,Y_Rot_Vive,Z_Rot_Vive,W_Rot_Vive];
+
+
 %Vive = Vive(3:end-1,:);
 
 %TimeLine_Vive = TimeLine_Vive(3:end-1);

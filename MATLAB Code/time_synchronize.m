@@ -29,7 +29,7 @@ wandY13 = wandY(:,3);
 
 %%%Rot
 %delay = 0;
-%delay = 0.038;
+delay = 0.038;
 %0.033- 2.30
 %0.035- 2.24
 %0.038- 2.22
@@ -61,7 +61,7 @@ wandY13 = wandY(:,3);
 %0.06- 
 
 %%%Rand2
-delay = 0.015;
+%delay = 0.015;
 %0.010 - 10.0
 %0.013 - 7.8
 %0.015 - 7.3
@@ -80,21 +80,21 @@ delay = 0.015;
 
 %TimeLine_Vicon_Min = min(TimeLine_Vicon);
 %translate
-%TimeLine_Vicon_Min = 44*60 + 57.225734233;
+TimeLine_Vicon_Min = 44*60 + 57.225734233;
 %rot
 %TimeLine_Vicon_Min = 48*60 + 47.248171329;
 %rand1
 %TimeLine_Vicon_Min = 47*60 + 00.693967342;
 %rand2
-TimeLine_Vicon_Min = 50*60 + 45.747211933;
+%TimeLine_Vicon_Min = 50*60 + 45.747211933;
 
 
 TimeLine_Vicon_Max = max(TimeLine_Vicon);
 TimeLine_Vive_Min = min(TimeLine_Vive);
 TimeLine_Vive_Max = max(TimeLine_Vive);
 
-TimeLine_Vicon = linspace(TimeLine_Vicon_Min, TimeLine_Vicon_Max, length(TimeLine_Vicon));
-
+%TimeLine_Vicon = linspace(TimeLine_Vicon_Min, TimeLine_Vicon_Max, length(TimeLine_Vicon));
+%TimeLine_Vicon = TimeLine_Vicon';
 
 
 if (TimeLine_Vicon_Min<TimeLine_Vive_Min)
